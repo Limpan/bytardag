@@ -12,10 +12,10 @@ def test_password_reset_email(client):
     # response = client.get(url_for('auth.password_reset_request'))
     with mail.record_messages() as outbox:
         response = client.post(url_for('auth.password_reset_request'),
-                               data=dict(email='hugo@hugolundin.se'))
+                               data=dict(email=''))
         # assert response.status_code == 200
         assert len(outbox) == 1
-        assert outbox[0].subject == '[Chronos] Reset password'
+        assert outbox[0].subject == '[bytardag.se] Reset password'
         assert 'Hugo' in outbox[0].html
 
         token = re.search(r'reset\/(.*)"', outbox[0].html).group(1)

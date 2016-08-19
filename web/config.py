@@ -2,13 +2,14 @@ import os
 
 
 class Config:
+    SERVER_NAME = os.environ.get('SERVER_NAME') or 'localhost:5000'
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'very hard to guess string'
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     BYTARDAG_ADMIN = os.environ.get('BYTARDAG_ADMIN')
 
-    BYTARDAG_MAIL_SENDER = 'Eksjö Klädbytardag <info@bytardag.se>'
+    BYTARDAG_MAIL_SENDER = 'Eksjö Klädbytardag <no-reply@email.bytardag.se>'
     BYTARDAG_MAIL_SUBJECT_PREFIX = '[bytardag.se]'
 
     MAIL_SERVER = os.environ.get('MAIL_SERVER') or '127.0.0.1'
@@ -67,7 +68,7 @@ class Config:
 
     # List with all the modules containing tasks for celery
 
-    CELERY_IMPORTS = ['app.email.tasks']
+    CELERY_IMPORTS = ['app.email']
 
     @staticmethod
     def init_app(app):

@@ -1,22 +1,13 @@
-from wtforms import (BooleanField,
-                     PasswordField,
-                     StringField,
-                     SubmitField)
-
-from wtforms.validators import (Email,
-                                EqualTo,
-                                Length,
-                                Regexp,
-                                Required)
-
-from ..models import User
+from wtforms import BooleanField, PasswordField, StringField, SubmitField
+from wtforms.validators import Email, EqualTo, Length, Regexp, Required
+from  ..models import User
 from flask_wtf import Form
 from wtforms import ValidationError
 
 
 class LoginForm(Form):
     email = StringField('Email', validators=[Required(),
-                                             Length(1, 64),
+                                             Length(1, 254),
                                              Email()])
     password = PasswordField('Lösenord', validators=[Required()])
     remember_me = BooleanField('Håll mig inloggad')
@@ -34,14 +25,14 @@ class ChangePasswordForm(Form):
 
 class PasswordResetRequestForm(Form):
     email = StringField('Email', validators=[Required(),
-                                             Length(1, 64),
+                                             Length(1, 254),
                                              Email()])
     submit = SubmitField('Återställ lösenord')
 
 
 class PasswordResetForm(Form):
     email = StringField('Email', validators=[Required(),
-                                             Length(1, 64),
+                                             Length(1, 254),
                                              Email()])
     password = PasswordField('Nytt lösenord', validators=[Required(),
                                                           EqualTo('password2',

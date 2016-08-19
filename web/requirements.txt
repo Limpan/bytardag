@@ -1,6 +1,6 @@
 celery>=3.1.23
 coverage>=4.0.3
-flake8>=2.5.4
+flake8==2.6.2
 flake8-docstrings>=0.2.5
 Flask==0.10.1
 Flask-Bootstrap>=3.3.5.7

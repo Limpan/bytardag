@@ -3,12 +3,43 @@
 <meta charset="UTF-8" />
 <meta http-equiv="Content-Language" content="sv_SE" />
 {{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/customizations.css') }}">
 {% endblock %}
 {% block title %}bytardag.se{% endblock %}
 
 {% block content %}
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">Eksjö Klädbytardag</a>
+      </div>
+
+      <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_administrator %}
+          <li><a href="{{ url_for('main.dashboard') }}">Admin</a></li>
+        {% endif %}
+        <li><a href="{{ url_for('main.profile') }}">Profil</a></li>
+        {% if current_user.is_anonymous %}
+          <li><a href="{{ url_for('auth.login') }}">Logga in</a></li>
+        {% else %}
+        <li><a href="{{ url_for('auth.logout') }}">Logga ut</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+
   <div class="container">
     <br>
+    {% if not current_user.is_anonymous and not (current_user.first_name and current_user.last_name) %}
+      <div class="alert alert-info">
+        <p>Vi behöver veta lite mer om dig. <a href="{{ url_for('main.profile') }}">Fyll i din profil.</a></p>
+      </div>
+    {% endif %}
+    {% if not current_user.is_anonymous and not current_user.confirmed %}
+      <div class="alert alert-warning">
+        <p>Din epostadress har inte bekräftats. <a href="{{ url_for('auth.resend_confirmation') }}">Skicka nytt mail.</a></p>
+      </div>
+    {% endif %}
     {% for message in get_flashed_messages() %}
       <div class="alert alert-warning">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -23,6 +54,7 @@
 {% block scripts %}
   {{ super() }}
   {{ moment.include_moment() }}
+  {{ moment.lang('sv') }}
   <script type="text/javascript">
     var $SCRIPT_ROOT = {{ url_for('main.index', _external = True)|tojson|safe }}
   </script>

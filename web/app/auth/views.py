@@ -3,9 +3,9 @@ from flask_login import login_user, logout_user, login_required, current_user
 from .forms import LoginForm, ChangePasswordForm, PasswordResetRequestForm, ChangeEmailForm, PasswordResetForm
 from . import auth
 from .. import db
-from ..email.tasks import send_email
 from ..models import User
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+#from ..email import send_email
 
 
 @auth.before_app_request
@@ -36,15 +36,35 @@ def login():
         if user is not None:
             if user.verify_password(form.password.data):
                 login_user(user, form.remember_me.data)
-                return redirect(request.args.get('next') or url_for('admin.index'))
+                return redirect(request.args.get('next') or url_for('main.index'))
         flash('Fel användarnamn eller lösenord.')
     return render_template('auth/login.html', form=form)
 
 
 @auth.route('/logout', methods=['GET', 'POST'])
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
+
+
+@auth.route('/confirm/<token>')
+@login_required
+def confirm(token):
+    if current_user.confirmed:
+        return redirect(url_for('main.index'))
+    if current_user.confirm(token):
+        flash('Du har bekräftat ditt kontos epostadress.')
+    else:
+        flash('Bekräftelselänken är felaktig eller för gammal.')
+    return redirect(url_for('main.index'))
+
+
+@auth.route('/confirm')
+@login_required
+def resend_confirmation():
+    token = current_user.generate_confirmation_token()
+    send_email.delay(current_user.email, 'Bekräfta din epostadress', 'main/email/confirm', token=token)
 
 
 @auth.route('/change-password', methods=['GET', 'POST'])
@@ -54,15 +74,10 @@ def change_password():
 
     Can only be accessed when user is already authenticated.
     """
-    # Prevents token-based users from changing their password.
-    if current_user.password_hash == '':
-        abort(403)
-
     form = ChangePasswordForm()
     if form.validate_on_submit():
         if current_user.verify_password(form.old_password.data):
             current_user.password = form.password.data
-            db.session.add(current_user)
             db.session.commit()
             flash('Ditt lösenord är uppdaterat.')
             return redirect(url_for('main.index'))
@@ -82,7 +97,7 @@ def password_reset_request():
 
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user and user.password_hash != '':
+        if user:
             token = user.generate_reset_token()
             # Sends an email to the user, which contains a reset-token.
             send_email(user.email,
@@ -130,6 +145,7 @@ def change_email_request():
             new_email = form.email.data
             token = current_user.generate_email_change_token(new_email)
             # Sends an email to the new email adress for verification.
+            from ..email import send_email
             send_email(new_email, 'Verfiera epostadress', 'auth/email/change_email', user=current_user, token=token)
             flash('Ett epostmeddelande med instruktioner för att verfiera din nya epostadress har skickats till den.')
             return redirect(url_for('main.index'))

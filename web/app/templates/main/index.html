@@ -3,8 +3,75 @@
 
 {% block page_content %}
   <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <h1>Välkommen!</h1>
+    <div class="col-md-12">
+      <h1>Eksjö klädbytardag</h1>
     </div>
   </div>
+  <div class="row">
+
+    <!-- Köp -->
+    <div class="col-md-4">
+      <h2>Var med och fynda</h2>
+      <p>Kom till Klädbytardagen och fynda. Vi öppnar {{ moment(start_time).format('dddd [den] D MMMM [klockan] HH:mm') }} och du har
+        möjlighet att fynda kläder, skor, leksaker och annat fram till klockan {{ moment(end_time).format('HH:mm') }}.
+      </p>
+    </div>
+
+    <!-- Sälj -->
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Var med och sälj</h2>
+          <p>Bli en av våra många säljare. Det är enkelt!</p>
+        </div>
+      </div>
+
+      <div class="col-md-12 well arrow_box">
+        <h3>Registrera dig</h3>
+        <p>Detta är första steget för att bli säljare. Vi kommer inte dela din adress med någon och bara skicka information om klädbytardagen.</p>
+        {% if current_user.is_anonymous %}
+        {{ wtf.quick_form(register_form, button_map={'submit':'success'}) }}
+        <hr/>
+        <p>Har du redan registrerat dig kan du <a href="{{ url_for('auth.login') }}">logga in här</a>.</p>
+        {% endif %}
+      </div>
+
+      <div class="col-md-12 well arrow_box2">
+        <h3>Anmäl dig</h3>
+        <p>När du har loggat in dig och anmälan har öppnat kan du anmäla dig med knappen nedan.</p>
+        {% if current_user.confirmed and not attending%}
+        <form class="form form-horizontal" method="post" role="form">
+          {{ signup_form.hidden_tag() }}
+          <div class="text-center">
+            {{ signup_form.submit(class="btn btn-lg btn-primary") }}
+          </div>
+        </form>
+        {% else %}
+        <div class="text-center">
+          <button type="button" class="btn btn-lg btn-primary" disabled>Anmäl mig</button>
+        </div>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <!-- Dela -->
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Dela med världen</h2>
+          <p>Sprid information om vår klädbytardag så att fler får möjligheten att köpa och sälja!</p>
+        </div>
+      </div>
+
+    <!-- Volontär -->
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Var med som volontär</h2>
+          <p>Vi är många som hjälps åt för att genomföra klädbytardagen.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% endblock %}

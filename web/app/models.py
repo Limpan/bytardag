@@ -65,12 +65,15 @@ class User(UserMixin, db.Model):
     """Database model for user accounts."""
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(64), unique=True, index=True)
+    email = db.Column(db.String(254), unique=True, index=True)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
     password_hash = db.Column(db.String(128), default=None)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+    confirmed = db.Column(db.Boolean, default=False)
+    phone = db.Column(db.String(32))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    events = db.relationship('Attendance', back_populates='user')
 
     def __init__(self, **kwargs):
         """Init-method used for assigning roles.
@@ -95,10 +98,29 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def generate_confirmation_token(self, expiration=3600):
+        """Used to generate a token for email confirmation."""
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm': self.id}).decode('utf-8')
+
+    def confirm(self, token):
+        """Used to verify a token for email confirmation."""
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return False
+        if data.get('confirm') != self.id:
+            return False
+        self.confirmed = True
+        db.session.add(self)
+        db.session.commit()
+        return True
+
     def generate_reset_token(self, expiration=3600):
         """Used to generate a token for a password reset."""
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
-        return s.dumps({'reset': self.id})
+        return s.dumps({'reset': self.id}).decode('utf-8')
 
     def reset_password(self, token, new_password):
         """Used to verify token and set new password."""
@@ -110,30 +132,6 @@ class User(UserMixin, db.Model):
         if data.get('reset') != self.id:
             return False
         self.password = new_password
-        db.session.add(self)
-        db.session.commit()
-        return True
-
-    def generate_email_change_token(self, new_email, expiration=3600):
-        """Used to generate a token for an email change."""
-        s = Serializer(current_app.config['SECRET_KEY'], expiration)
-        return s.dumps({'change_email': self.id, 'new_email': new_email})
-
-    def change_email(self, token):
-        """Used to verify token and change email adress."""
-        s = Serializer(current_app.config['SECRET_KEY'])
-        try:
-            data = s.loads(token)
-        except:
-            return False
-        if data.get('change_email') != self.id:
-            return False
-        new_email = data.get('new_email')
-        if new_email is None:
-            return False
-        if self.query.filter_by(email=new_email).first() is not None:
-            return False
-        self.email = new_email
         db.session.add(self)
         db.session.commit()
         return True
@@ -160,7 +158,7 @@ class User(UserMixin, db.Model):
         """
         s = Serializer(current_app.config['SECRET_KEY'],
                        expires_in=expiration)
-        return s.dumps({'id': self.id}).decode('ascii')
+        return s.dumps({'id': self.id}).decode('utf-8')
 
     @staticmethod
     def verify_auth_token(token):
@@ -203,9 +201,18 @@ class Event(db.Model):
     signup_start = db.Column(db.DateTime)
     signup_end = db.Column(db.DateTime)
     limit = db.Column(db.Integer)
+    attendees = db.relationship('Attendance', back_populates='event')
+
 
     def __repr__(self):
         return '<Event {}>'.format(self.id)
+
+
+def get_current_event():
+    event = Event.query.filter(Event.start > datetime.utcnow()).order_by(Event.start).first()
+    if not event:
+        event = Event.query.order_by(Event.start).one()
+    return event
 
 
 association_user_shift = db.Table('association',
@@ -225,37 +232,20 @@ class Shift(db.Model):
     def __repr__(self):
         return '<Shift {}>'.format(self.id)
 
+class Attendance(db.Model):
+    """Database model for the attendance relation, implemented as an
+    association object.
 
-class Participate(db.Model):
-    """Database model for the participates relation."""
-    __tablename__ = 'events_users'
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    Association object pattern:
+    http://docs.sqlalchemy.org/en/latest/orm/basic_relationships.html#association-object
+    """
+    __tablename__ = 'attendance'
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    seller_id = db.Column(db.String(20))
+    seller_id = db.Column(db.String(20), default='')
+    user = db.relationship('User', back_populates='events')
+    event = db.relationship('Event', back_populates='attendees')
 
     def __repr__(self):
-        return '<Participate {}>'.format(self.id)
-
-
-class Email(db.Model):
-    """Database model for sent emails."""
-    __tablename__ = 'emails'
-    id = db.Column(db.Integer, primary_key=True)
-    message = db.Column(JSON)
-    events = db.relationship('EmailEvent', backref='email', lazy='dynamic')
-
-    def __repr__(self):
-        return '<Email {}>'.format(self.id)
-
-
-class EmailEvent(db.Model):
-    """Database model for transactional email events."""
-    __tablename__ = 'emailevents'
-    id = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.String(20), index=True)
-    data = db.Column(JSON)
-    email_id = db.Column(db.Integer, db.ForeignKey('emails.id'))
-
-    def __repr__(self):
-        return '<EmailEvent {}>'.format(self.id)
+        return '<Attendance; event {}, user {}>'.format(self.event_id, self.user_id)

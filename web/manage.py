@@ -10,12 +10,13 @@ if os.path.exists('.env'):
             os.environ[var[0]] = var[1]
 
 
-from app import create_app, db, models
+from app import create_app, db
+from app.models import Permission, Role, User, Event, Shift, Attendance
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
 
 
-app = create_app(os.getenv('CHRONOS_CONFIG') or 'default')
+app = create_app(os.getenv('BYTARDAG_CONFIG') or 'default')
 manager = Manager(app)
 migrate = Migrate(app, db)
 
@@ -24,7 +25,7 @@ APP_FOLDER = 'app'
 
 # Implement manage.py shell
 def make_shell_context():  # noqa
-    return dict(app=app, db=db, models=models)
+    return dict(app=app, db=db, Permission=Permission, Role=Role, User=User, Event=Event, Shift=Shift, Attendance=Attendance)
 
 manager.add_command('shell', Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
@@ -118,6 +119,20 @@ def deploy():
 
     # Create user roles
     Role.insert_roles()
+
+
+@manager.command
+def seed():
+    from datetime import datetime
+    from app.models import Event
+
+    event = Event(start=datetime(2016, 10, 1, 8, 0),
+                  end=datetime(2016, 10, 1, 12, 0),
+                  signup_start=datetime(2016, 9, 11, 7, 0),
+                  signup_end=datetime(2016, 9, 25, 0, 0),
+                  limit=125)
+    db.session.add(event)
+    db.session.commit()
 
 
 if __name__ == "__main__":
