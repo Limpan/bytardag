@@ -22,7 +22,6 @@ def index():
         login_user(user, True)
         flash('Ett bekräftelsemail har skickats till din epostadress.')
 
-
     signup_form = SignupForm(prefix='signup')
     if signup_form.validate_on_submit() and signup_form.submit.data:
         current_app.logger.info('Signing up user {}.'.format(current_user.email))
@@ -33,7 +32,10 @@ def index():
         db.session.commit()
         flash('Grattis! Du är nu anmäld. Ett mail har skickats till din epostadress med instruktioner.')
 
-    attending = current_event in [attendance.event for attendance in current_user.events]
+    if not current_user.is_anonymous:
+        attending = current_event in [attendance.event for attendance in current_user.events]
+    else:
+        attending = None
 
     return render_template('main/index.html', register_form=register_form,
                                               signup_form=signup_form,
@@ -43,6 +45,7 @@ def index():
 
 
 @main.route('/profile', methods=['GET', 'POST'])
+@login_required
 def profile():
     user = current_user
     form = ProfileForm(email=user.email, first_name=user.first_name, last_name=user.last_name, phone=user.phone)
@@ -56,11 +59,13 @@ def profile():
 
 
 @main.route('/dashboard')
+@login_required
 def dashboard():
     current_event = get_current_event()
     return render_template('main/dashboard.html', current_event=current_event)
 
 
 @main.route('/event/add', methods=['GET', 'POST'])
+@login_required
 def add_event():
     return

@@ -1,13 +1,36 @@
 version: '2'
 services:
+  web:
+    restart: always
+    build: ./web
+    expose:
+      - 8000
+    links:
+      - postgresql
+    volumes:
+      - /usr/src/app/static
+    command: /usr/local/bin/gunicorn -w 2 -b :8000 wsgi:app
+
+  nginx:
+    restart: always
+    build: ./nginx
+    ports:
+      - 80:80
+    volumes:
+      - /www/static
+    volumes_from:
+      - web
+    links:
+      - web:web
+
   postgresql:
     restart: always
     build: ./postgres
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=secretpassword
       - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
   redis:
     restart: always
@@ -22,7 +45,7 @@ services:
       - "5672:5672"
     environment:
       - RABBITMQ_DEFAULT_USER=rabbitmq
-      - RABBITMQ_DEFAULT_PASS=secretpassword
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
 
   worker:
     build: ./web
@@ -34,4 +57,4 @@ services:
       - /usr/src/app/static
     command: celery -A app.celery worker
     environment:
-      - SERVER_NAME=localhost:5000
+      - SERVER_NAME=${SERVER_NAME}

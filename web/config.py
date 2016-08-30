@@ -148,6 +148,7 @@ class CeleryConfig(Config):
 config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
+    'staging': ProductionConfig,
     'production': ProductionConfig,
     'celery': CeleryConfig,
 
