@@ -10,6 +10,16 @@ services:
     volumes:
       - /usr/src/app/static
     command: /usr/local/bin/gunicorn -w 2 -b :8000 wsgi:app
+    environment:
+      - SERVER_NAME=${SERVER_NAME}
+      - BYTARDAG_CONFIG=${BYTARDAG_CONFIG}
+      - BYTARDAG_ADMIN=${BYTARDAG_ADMIN}
+      - DATABASE_URI=${DATABASE_URI}
+      - BROKER_URL=${BROKER_URL}
+      - RESULT_BACKEND=${RESULT_BACKEND}
+      - MAIL_SERVER=${MAIL_SERVER}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
 
   nginx:
     restart: always
@@ -29,7 +39,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
+      - POSTGRES_USER=${POSTGRES_USERNAME}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
   redis:
@@ -44,7 +54,7 @@ services:
     ports:
       - "5672:5672"
     environment:
-      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USERNAME}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
 
   worker:
@@ -58,3 +68,11 @@ services:
     command: celery -A app.celery worker
     environment:
       - SERVER_NAME=${SERVER_NAME}
+      - BYTARDAG_CONFIG=${BYTARDAG_CELERY_CONFIG}
+      - BYTARDAG_ADMIN=${BYTARDAG_ADMIN}
+      - CELERY_DATABASE_URI=${DATABASE_URI}
+      - BROKER_URL=${BROKER_URL}
+      - RESULT_BACKEND=${RESULT_BACKEND}
+      - MAIL_SERVER=${MAIL_SERVER}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}

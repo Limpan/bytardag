@@ -2,6 +2,8 @@ import os
 
 
 class Config:
+    STAGING = os.environ.get('STAGING') == 'True' or False
+
     SERVER_NAME = os.environ.get('SERVER_NAME') or 'localhost:5000'
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'very hard to guess string'
 

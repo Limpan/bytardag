@@ -29,7 +29,11 @@
   </nav>
 
   <div class="container">
-    <br>
+    {% if config['STAGING'] %}
+    <div class="alert alert-danger">
+      <p>Detta är en staging-server och inte den riktiga. Ingen anmälan här!</p>
+    </div>
+    {% endif %}
     {% if not current_user.is_anonymous and not (current_user.first_name and current_user.last_name) %}
       <div class="alert alert-info">
         <p>Vi behöver veta lite mer om dig. <a href="{{ url_for('main.profile') }}">Fyll i din profil.</a></p>
