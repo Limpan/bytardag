@@ -2,8 +2,6 @@ import os
 
 
 class Config:
-    STAGING = os.environ.get('STAGING') == 'True' or False
-
     SERVER_NAME = os.environ.get('SERVER_NAME') or 'localhost:5000'
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'very hard to guess string'
 
@@ -130,16 +128,12 @@ Message:
         app.logger.addHandler(mail_handler)
 
 
-class UnixConfig(ProductionConfig):
+class StagingConfig(ProductionConfig):
+    STAGING = True
+
     @classmethod
     def init_app(cls, app):
         ProductionConfig.init_app(app)
-
-        import logging
-        from logging.handlers import StreamHandler
-        stream_handler = StreamHandler()
-        stream_handler.setLevel(logging.INFO)
-        app.logger.addHandler(stream_handler)
 
 
 class CeleryConfig(Config):
@@ -150,7 +144,7 @@ class CeleryConfig(Config):
 config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
-    'staging': ProductionConfig,
+    'staging': StagingConfig,
     'production': ProductionConfig,
     'celery': CeleryConfig,
 
