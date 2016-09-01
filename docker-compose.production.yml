@@ -38,6 +38,8 @@ services:
     build: ./postgres
     ports:
       - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=${POSTGRES_USERNAME}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -76,3 +78,7 @@ services:
       - MAIL_SERVER=${MAIL_SERVER}
       - MAIL_USERNAME=${MAIL_USERNAME}
       - MAIL_PASSWORD=${MAIL_PASSWORD}
+
+volumes:
+  dbdata:
+    driver: local
