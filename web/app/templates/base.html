@@ -15,14 +15,14 @@
       </div>
 
       <ul class="nav navbar-nav navbar-right">
-        {% if current_user.is_administrator %}
+        {% if current_user.is_administrator() %}
           <li><a href="{{ url_for('main.dashboard') }}">Admin</a></li>
         {% endif %}
-        <li><a href="{{ url_for('main.profile') }}">Profil</a></li>
         {% if current_user.is_anonymous %}
           <li><a href="{{ url_for('auth.login') }}">Logga in</a></li>
         {% else %}
-        <li><a href="{{ url_for('auth.logout') }}">Logga ut</a></li>
+          <li><a href="{{ url_for('main.profile') }}">Profil</a></li>
+          <li><a href="{{ url_for('auth.logout') }}">Logga ut</a></li>
         {% endif %}
       </ul>
     </div>
@@ -34,7 +34,7 @@
       <p>Detta är en staging-server och inte den riktiga. Ingen anmälan här!</p>
     </div>
     {% endif %}
-    {% if not current_user.is_anonymous and not (current_user.first_name and current_user.last_name) %}
+    {% if not current_user.is_anonymous and not current_user.profile_complete() %}
       <div class="alert alert-info">
         <p>Vi behöver veta lite mer om dig. <a href="{{ url_for('main.profile') }}">Fyll i din profil.</a></p>
       </div>

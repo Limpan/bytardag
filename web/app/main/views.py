@@ -28,8 +28,14 @@ def index():
         attendance = Attendance()
         attendance.event = current_event
         attendance.user = current_user
+
+        chars = 'ABCEFGHJKLMNOPRSTVXZ'
+        attendance.seller_id = '{}-{:02}'.format(chars[current_event.next_seller_id % 20], current_event.next_seller_id // 20 % 100 * 2 + 1)
+        current_event.next_seller_id += 1
+
         db.session.add(attendance)
         db.session.commit()
+        send_email.delay(current_user.email, 'Välkommen som säljare', 'main/email/seller', seller_id=attendance.seller_id)
         flash('Grattis! Du är nu anmäld. Ett mail har skickats till din epostadress med instruktioner.')
 
     if not current_user.is_anonymous:
@@ -41,7 +47,8 @@ def index():
                                               signup_form=signup_form,
                                               start_time=current_event.start,
                                               end_time=current_event.end,
-                                              attending=attending)
+                                              attending=attending,
+                                              current_event=current_event)
 
 
 @main.route('/profile', methods=['GET', 'POST'])

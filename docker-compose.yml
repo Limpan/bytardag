@@ -35,3 +35,6 @@ services:
     command: celery -A app.celery worker
     environment:
       - SERVER_NAME=localhost:5000
+      - MAIL_SERVER=${MAIL_SERVER}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}

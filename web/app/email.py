@@ -21,6 +21,6 @@ def send_email(to, subject, template, **kwargs):
     logger.debug('Sending email through: ' + app.config['MAIL_SERVER'])
     try:
         mail.send(msg)
-    except:
-        logger.error('Failed to send email to {email}'.format(email=msg.recipients))
+    except Exception as e:
+        logger.error('Failed to send email to {email}'.format(email=msg.recipients), exc_info=1)
     # TODO: Add code to handle exceptions.

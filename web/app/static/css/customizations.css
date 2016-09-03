@@ -1,3 +1,10 @@
+.well hr {
+  border-top: 1px solid #e3e3e3;
+  border-bottom: 1px solid #fff;
+}
+
+/* -- Arrows between boxes. */
+
 .arrow {
   position: relative;
   border-bottom: 2px solid #ffffff;

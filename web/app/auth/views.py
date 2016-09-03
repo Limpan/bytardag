@@ -64,7 +64,10 @@ def confirm(token):
 @login_required
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
+    from ..email import send_email
     send_email.delay(current_user.email, 'Bekräfta din epostadress', 'main/email/confirm', token=token)
+    flash('Ett nytt bekräftelsemail har skickats.')
+    return redirect(url_for('main.index'))
 
 
 @auth.route('/change-password', methods=['GET', 'POST'])
@@ -100,6 +103,7 @@ def password_reset_request():
         if user:
             token = user.generate_reset_token()
             # Sends an email to the user, which contains a reset-token.
+            from ..email import send_email
             send_email(user.email,
                        'Reset password',
                        'auth/email/reset_password',

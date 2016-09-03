@@ -30,7 +30,7 @@
         <h3>Registrera dig</h3>
         <p>Detta är första steget för att bli säljare. Vi kommer inte dela din adress med någon och bara skicka information om klädbytardagen.</p>
         {% if current_user.is_anonymous %}
-        {{ wtf.quick_form(register_form, button_map={'submit':'success'}) }}
+        {{ wtf.quick_form(register_form, button_map={'register-submit': 'primary'}) }}
         <hr/>
         <p>Har du redan registrerat dig kan du <a href="{{ url_for('auth.login') }}">logga in här</a>.</p>
         {% endif %}
@@ -39,7 +39,7 @@
       <div class="col-md-12 well arrow_box2">
         <h3>Anmäl dig</h3>
         <p>När du har loggat in dig och anmälan har öppnat kan du anmäla dig med knappen nedan.</p>
-        {% if current_user.confirmed and not attending%}
+        {% if current_user.confirmed and not attending and current_event.open() %}
         <form class="form form-horizontal" method="post" role="form">
           {{ signup_form.hidden_tag() }}
           <div class="text-center">
@@ -52,7 +52,6 @@
         </div>
         {% endif %}
       </div>
-
     </div>
 
     <!-- Dela -->

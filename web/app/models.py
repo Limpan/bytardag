@@ -149,25 +149,8 @@ class User(UserMixin, db.Model):
         self.last_seen = datetime.utcnow()
         db.session.add(self)
 
-    def generate_auth_token(self, expiration):
-        """Return an auth token.
-
-        Args:
-            expiration:
-                integer (seconds) before token expires
-        """
-        s = Serializer(current_app.config['SECRET_KEY'],
-                       expires_in=expiration)
-        return s.dumps({'id': self.id}).decode('utf-8')
-
-    @staticmethod
-    def verify_auth_token(token):
-        s = Serializer(current_app.config['SECRET_KEY'])
-        try:
-            data = s.loads(token)
-        except:
-            return None
-        return User.query.get(data['id'])
+    def profile_complete(self):
+        return self.first_name and self.last_name
 
     def __repr__(self):
         return '<User {}>'.format(self.email)
@@ -202,7 +185,11 @@ class Event(db.Model):
     signup_end = db.Column(db.DateTime)
     limit = db.Column(db.Integer)
     attendees = db.relationship('Attendance', back_populates='event')
+    next_seller_id = db.Column(db.Integer, default=0)
 
+
+    def open(self):
+        return self.signup_start < datetime.utcnow()
 
     def __repr__(self):
         return '<Event {}>'.format(self.id)
