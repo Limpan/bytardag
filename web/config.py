@@ -9,7 +9,8 @@ class Config:
 
     BYTARDAG_ADMIN = os.environ.get('BYTARDAG_ADMIN')
 
-    BYTARDAG_MAIL_SENDER = os.environ.get('MAIL_SENDER') or 'Eksjö Klädbytardag <no-reply@email.bytardag.se>'
+    BYTARDAG_MAIL_SENDER = os.environ.get('MAIL_SENDER') or 'Eksjö Klädbytardag <no-reply@bytardag.se>'
+    BYTARDAG_MAIL_REPLY_TO = os.environ.get('MAIL_REPLY_TO') or 'Eksjö Klädbytardag <info@bytardag.se>'
     BYTARDAG_MAIL_SUBJECT_PREFIX = os.environ.get('MAIL_SUBJECT_PREFIX') or '[bytardag.se]'
 
     MAIL_SERVER = os.environ.get('MAIL_SERVER') or '127.0.0.1'
