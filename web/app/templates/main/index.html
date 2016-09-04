@@ -83,11 +83,13 @@
       </div>
 
       {% if attending %}
+        <!-- User is already signed up to current event. -->
         <div class="col-md-12 well">
           <h3>Välkommen som säljare</h3>
           <p>Trevligt att just du vill vara med och sälja!</p>
         </div>
       {% else %}
+        <!-- First box, registration. -->
         <div class="col-md-12 well arrow_box">
           <h3>Registrera dig</h3>
           <p>Detta är första steget för att bli säljare. Vi kommer inte dela din adress med någon och bara skicka information om klädbytardagen.</p>
@@ -98,17 +100,29 @@
           {% endif %}
         </div>
 
+        <!-- Second box, signup. -->
         <div class="col-md-12 well arrow_box2">
           <h3>Anmäl dig</h3>
-          <p>När du har loggat in dig och anmälan har öppnat kan du anmäla dig med knappen nedan.</p>
-          {% if current_user.confirmed and not attending and current_event.open() %}
+          {% if current_event.signup_over() %}
+            <!-- Signup closed, either full or signup_end has passed. -->
+            <p class="text-danger">
+              Tyvärr är alla platser bokade. I nuläget har vi inget system för efteranmälan och kan tyvärr inte erbjuda reservplatser.
+            </p>
+          {% elif current_user.confirmed and not attending and current_event.signup_open() %}
+            <!-- Signup open. -->
+            <p>Anmälan är öppen, anmäl dig med knappen nedan.</p>
             <form class="form form-horizontal" method="post" role="form">
               {{ signup_form.hidden_tag() }}
               <div class="text-center">
                 {{ signup_form.submit(class="btn btn-lg btn-primary") }}
               </div>
-            </form>Email
+            </form>
           {% else %}
+            <!-- Preconditions for signup not passed. -->
+            <p>
+              När du har loggat in dig och anmälan har öppnat kan du anmäla dig med knappen nedan.
+              Anmälan öppnar {{ moment(current_event.signup_start).fromNow() }}.
+            </p>
             <div class="text-center">
               <button type="button" class="btn btn-lg btn-primary" disabled>Anmäl mig</button>
             </div>

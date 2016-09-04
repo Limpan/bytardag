@@ -188,8 +188,13 @@ class Event(db.Model):
     next_seller_id = db.Column(db.Integer, default=0)
 
 
-    def open(self):
-        return self.signup_start < datetime.utcnow()
+    def signup_open(self):
+        now = datetime.utcnow()
+        return self.signup_start < now and now < self.signup_end and len(self.attendees) < self.limit
+
+    def signup_over(self):
+        now = datetime.utcnow()
+        return now >= self.signup_end or len(self.attendees) >= self.limit
 
     def __repr__(self):
         return '<Event {}>'.format(self.id)
