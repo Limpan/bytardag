@@ -7,6 +7,7 @@
       <h1>Eksjö klädbytardag</h1>
     </div>
   </div>
+
   <div class="row">
 
     <!-- Köp -->
@@ -17,27 +18,68 @@
         Kläder och skor säljs i Missionskyrkan på Österlånggatan 3 medan leksaker och tillbehör i säljs på Fröhuset på Österlånggatan 6.
         Utanför Missionskyrkan kan man köpa korv med bröd som säljs av Eksjö Missionskyrkas Equmeniascouter.
       </p>
+
+      <!-- Sälj -->
+      <h2>Var med och sälj</h2>
+      <p>
+        Bli en av våra många säljare. Det är enkelt!
+        För att kunna anmäla dig som säljare behöver du registrera en email-adress och ett lösenord.
+        Från och med den {{ moment(current_event.signup_start).format('D MMMM [klockan] HH:mm') }} kan man anmäla sig här och bli en av våra 125 säljare.
+      </p>
+      <p>
+        Efter du anmält dig får du ett email med ett unikt säljnummer.
+        Du ska sedan märka de kläder och saker som du vill sälja enligt den instruktion som kommer i emailet.
+        Det som ska säljas lämnas in fredagen innan Klädbytardagen mellan 15.00 och 18.00.
+        Om du vill ha tillbaka osålda artiklar hämtas dessa på Klädbytardagen mellan 16.45 och 17.00.
+        Du som säljare får 75 % i förtjänst av dina sålda varor.
+        Resterande pengar går till Eksjö Missionkyrkas barn och ungdomsverksamhet.
+      </p>
     </div>
 
-    <!-- Sälj -->
+    <!-- Dela -->
     <div class="col-md-4">
       <div class="row">
         <div class="col-md-12">
-          <h2>Var med och sälj</h2>
+          <h2>Dela med världen</h2>
           <p>
-            Bli en av våra många säljare. Det är enkelt!
-            För att kunna anmäla dig som säljare behöver du registrera en email-adress och ett lösenord.
-            Från och med den {{ moment(current_event.signup_start).format('D MMMM [klockan] HH:mm') }} kan man anmäla sig här och bli en av våra 125 säljare.
+            Ta del av mer information om vår klädbytardag och sprid den vidare så att fler får möjligheten att köpa och sälja!
           </p>
           <p>
-            Efter du anmält dig får du ett email med ett unikt säljnummer.
-            Du ska sedan märka de kläder och saker som du vill sälja enligt den instruktion som kommer i emailet.
-            Det som ska säljas lämnas in fredagen innan Klädbytardagen mellan 15.00 och 18.00.
-            Om du vill ha tillbaka osålda artiklar hämtas dessa på Klädbytardagen mellan 16.45 och 17.00.
-            Du som säljare får 75 % i förtjänst av dina sålda varor.
-            Resterande pengar går till Eksjö Missionkyrkas barn och ungdomsverksamhet.
+            <a href="https://www.facebook.com/kladbytardagen/">Klädbytardagen på Facebook</a><br>
+            <a href="http://www.missionskyrkaneksjo.se/missionskyrkaneksjo/extern/start.php">Eksjö Missionskyrka</a>
           </p>
         </div>
+      </div>
+
+      <!-- Volontär -->
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Var med som volontär</h2>
+          <p>
+            Vi är många som hjälps åt för att genomföra klädbytardagen.
+            Klädytardagen skulle aldrig gå att genomföra utan ett stort antal människor som lägger ned tid och engagemang för att det ska bli av.
+            Det krävs uppemot 100 personer för att klara av en bytardag!
+            Om man vill vara med och förköpa under 2 timmar på fredagskvällen måste man fullgöra minst 3 arbetspass.
+          </p>
+        </div>
+      </div>
+
+      <!-- Historia -->
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Hur det började</h2>
+          <p>
+            Eksjö Missionskyrkas barn- och ungdomsförening Equmenia Eksjö har sedan 2001 anordnat Klädbytardagen.
+            Begagnade barnkläder, skor, leksaker och tillbehör får nya ägare.
+            Ett stort antal frivilliga sorterar inlämnade saker och sköter försäljningen.
+            Det som inte säljs eller hämtas efteråt skickas till Brobygget i Estland, ett samarbete mellan missionskyrkor på småländska höglandet och Unionskyrkan i Estland, och hamnar sedan i second hand-butiker i Estland.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="row">
       </div>
 
       {% if attending %}
@@ -75,47 +117,5 @@
       {% endif %}
     </div>
 
-    <!-- Dela -->
-    <div class="col-md-4">
-      <div class="row">
-        <div class="col-md-12">
-          <h2>Dela med världen</h2>
-          <p>
-            Ta del av mer information om vår klädbytardag och sprid den vidare så att fler får möjligheten att köpa och sälja!
-          </p>
-          <p>
-            <a href="https://www.facebook.com/kladbytardagen/">Klädbytardagen på Facebook</a><br>
-            <a href="http://www.missionskyrkaneksjo.se/missionskyrkaneksjo/extern/start.php">Eksjö Missionskyrka</a>
-          </p>
-        </div>
-      </div>
-
-    <!-- Volontär -->
-      <div class="row">
-        <div class="col-md-12">
-          <h2>Var med som volontär</h2>
-          <p>
-            Vi är många som hjälps åt för att genomföra klädbytardagen.
-            Klädytardagen skulle aldrig gå att genomföra utan ett stort antal människor som lägger ned tid och engagemang för att det ska bli av.
-            Det krävs uppemot 100 personer för att klara av en bytardag!
-            Om man vill vara med och förköpa under 2 timmar på fredagskvällen måste man fullgöra minst 3 arbetspass.
-          </p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-12">
-          <h2>Hur det började</h2>
-          <p>
-            Eksjö Missionskyrkas barn- och ungdomsförening Equmenia Eksjö har sedan 2001 anordnat Klädbytardagen.
-            Begagnade barnkläder, skor, leksaker och tillbehör får nya ägare.
-            Ett stort antal frivilliga sorterar inlämnade saker och sköter försäljningen.
-            Det som inte säljs eller hämtas efteråt skickas till Brobygget i Estland, ett samarbete mellan missionskyrkor på småländska höglandet och Unionskyrkan i Estland, och hamnar sedan i second hand-butiker i Estland.
-          </p>
-        </div>
-      </div>
-
-    </div>
   </div>
-
 {% endblock %}

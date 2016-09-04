@@ -99,7 +99,7 @@ def password_reset_request():
     form = PasswordResetRequestForm()
 
     if form.validate_on_submit():
-        current_app.logger('User with email adress {email} is trying to recover password.'.format(email=form.email.data))
+        current_app.logger.info('User with email adress {email} is trying to recover password.'.format(email=form.email.data))
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             token = user.generate_reset_token()
@@ -107,8 +107,8 @@ def password_reset_request():
             from ..email import send_email
             send_email.delay(user.email,
                              'Reset password',
-                             'auth/email/reset_password',
-                             user=user,
+                             'auth/email/password_reset',
+                             name=user.first_name,
                              token=token)
         flash('Ett mail med instruktioner för att återställa ditt lösenord har skickats till dig.')
         return redirect(url_for('auth.login'))
