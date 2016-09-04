@@ -18,9 +18,9 @@ def send_email(to, subject, template, **kwargs):
                   sender=app.config['BYTARDAG_MAIL_SENDER'], recipients=[to], charset='utf-8')
     msg.body = render_template(template + '.txt', **kwargs)
     msg.html = render_template(template + '.html', **kwargs)
-    logger.debug('Sending email through: ' + app.config['MAIL_SERVER'])
+    logger.debug('Sending email to {recipient} with {server}.'.format(recipient=to, server=app.config['MAIL_SERVER']))
     try:
         mail.send(msg)
     except Exception as e:
         logger.error('Failed to send email to {email}'.format(email=msg.recipients), exc_info=1)
-    # TODO: Add code to handle exceptions.
+        # TODO: Add code to handle exceptions.

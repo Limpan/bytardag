@@ -12,8 +12,10 @@
     <!-- Köp -->
     <div class="col-md-4">
       <h2>Var med och fynda</h2>
-      <p>Kom till Klädbytardagen och fynda. Vi öppnar {{ moment(start_time).format('dddd [den] D MMMM [klockan] HH:mm') }} och du har
-        möjlighet att fynda kläder, skor, leksaker och annat fram till klockan {{ moment(end_time).format('HH:mm') }}.
+      <p>
+        Kom till Klädbytardagen och fynda. Vi har öppet {{ moment(current_event.start).format('dddd [den] D MMMM [klockan] HH:mm') }} till {{ moment(current_event.end).format('HH:mm') }}.
+        Kläder och skor säljs i Missionskyrkan på Österlånggatan 3 medan leksaker och tillbehör i säljs på Fröhuset på Österlånggatan 6.
+        Utanför Missionskyrkan kan man köpa korv med bröd som säljs av Eksjö Missionskyrkas Equmeniascouter.
       </p>
     </div>
 
@@ -22,36 +24,55 @@
       <div class="row">
         <div class="col-md-12">
           <h2>Var med och sälj</h2>
-          <p>Bli en av våra många säljare. Det är enkelt!</p>
+          <p>
+            Bli en av våra många säljare. Det är enkelt!
+            För att kunna anmäla dig som säljare behöver du registrera en email-adress och ett lösenord.
+            Från och med den {{ moment(current_event.signup_start).format('D MMMM [klockan] HH:mm') }} kan man anmäla sig här och bli en av våra 125 säljare.
+          </p>
+          <p>
+            Efter du anmält dig får du ett email med ett unikt säljnummer.
+            Du ska sedan märka de kläder och saker som du vill sälja enligt den instruktion som kommer i emailet.
+            Det som ska säljas lämnas in fredagen innan Klädbytardagen mellan 15.00 och 18.00.
+            Om du vill ha tillbaka osålda artiklar hämtas dessa på Klädbytardagen mellan 16.45 och 17.00.
+            Du som säljare får 75 % i förtjänst av dina sålda varor.
+            Resterande pengar går till Eksjö Missionkyrkas barn och ungdomsverksamhet.
+          </p>
         </div>
       </div>
 
-      <div class="col-md-12 well arrow_box">
-        <h3>Registrera dig</h3>
-        <p>Detta är första steget för att bli säljare. Vi kommer inte dela din adress med någon och bara skicka information om klädbytardagen.</p>
-        {% if current_user.is_anonymous %}
-        {{ wtf.quick_form(register_form, button_map={'register-submit': 'primary'}) }}
-        <hr/>
-        <p>Har du redan registrerat dig kan du <a href="{{ url_for('auth.login') }}">logga in här</a>.</p>
-        {% endif %}
-      </div>
-
-      <div class="col-md-12 well arrow_box2">
-        <h3>Anmäl dig</h3>
-        <p>När du har loggat in dig och anmälan har öppnat kan du anmäla dig med knappen nedan.</p>
-        {% if current_user.confirmed and not attending and current_event.open() %}
-        <form class="form form-horizontal" method="post" role="form">
-          {{ signup_form.hidden_tag() }}
-          <div class="text-center">
-            {{ signup_form.submit(class="btn btn-lg btn-primary") }}
-          </div>
-        </form>
-        {% else %}
-        <div class="text-center">
-          <button type="button" class="btn btn-lg btn-primary" disabled>Anmäl mig</button>
+      {% if attending %}
+        <div class="col-md-12 well">
+          <h3>Välkommen som säljare</h3>
+          <p>Trevligt att just du vill vara med och sälja!</p>
         </div>
-        {% endif %}
-      </div>
+      {% else %}
+        <div class="col-md-12 well arrow_box">
+          <h3>Registrera dig</h3>
+          <p>Detta är första steget för att bli säljare. Vi kommer inte dela din adress med någon och bara skicka information om klädbytardagen.</p>
+          {% if current_user.is_anonymous %}
+          {{ wtf.quick_form(register_form, button_map={'register-submit': 'primary'}) }}
+          <hr/>
+          <p>Har du redan registrerat dig kan du <a href="{{ url_for('auth.login') }}">logga in här</a>.</p>
+          {% endif %}
+        </div>
+
+        <div class="col-md-12 well arrow_box2">
+          <h3>Anmäl dig</h3>
+          <p>När du har loggat in dig och anmälan har öppnat kan du anmäla dig med knappen nedan.</p>
+          {% if current_user.confirmed and not attending and current_event.open() %}
+            <form class="form form-horizontal" method="post" role="form">
+              {{ signup_form.hidden_tag() }}
+              <div class="text-center">
+                {{ signup_form.submit(class="btn btn-lg btn-primary") }}
+              </div>
+            </form>Email
+          {% else %}
+            <div class="text-center">
+              <button type="button" class="btn btn-lg btn-primary" disabled>Anmäl mig</button>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
     </div>
 
     <!-- Dela -->
@@ -59,7 +80,13 @@
       <div class="row">
         <div class="col-md-12">
           <h2>Dela med världen</h2>
-          <p>Sprid information om vår klädbytardag så att fler får möjligheten att köpa och sälja!</p>
+          <p>
+            Ta del av mer information om vår klädbytardag och sprid den vidare så att fler får möjligheten att köpa och sälja!
+          </p>
+          <p>
+            <a href="https://www.facebook.com/kladbytardagen/">Klädbytardagen på Facebook</a><br>
+            <a href="http://www.missionskyrkaneksjo.se/missionskyrkaneksjo/extern/start.php">Eksjö Missionskyrka</a>
+          </p>
         </div>
       </div>
 
@@ -67,9 +94,27 @@
       <div class="row">
         <div class="col-md-12">
           <h2>Var med som volontär</h2>
-          <p>Vi är många som hjälps åt för att genomföra klädbytardagen.</p>
+          <p>
+            Vi är många som hjälps åt för att genomföra klädbytardagen.
+            Klädytardagen skulle aldrig gå att genomföra utan ett stort antal människor som lägger ned tid och engagemang för att det ska bli av.
+            Det krävs uppemot 100 personer för att klara av en bytardag!
+            Om man vill vara med och förköpa under 2 timmar på fredagskvällen måste man fullgöra minst 3 arbetspass.
+          </p>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Hur det började</h2>
+          <p>
+            Eksjö Missionskyrkas barn- och ungdomsförening Equmenia Eksjö har sedan 2001 anordnat Klädbytardagen.
+            Begagnade barnkläder, skor, leksaker och tillbehör får nya ägare.
+            Ett stort antal frivilliga sorterar inlämnade saker och sköter försäljningen.
+            Det som inte säljs eller hämtas efteråt skickas till Brobygget i Estland, ett samarbete mellan missionskyrkor på småländska höglandet och Unionskyrkan i Estland, och hamnar sedan i second hand-butiker i Estland.
+          </p>
+        </div>
+      </div>
+
     </div>
   </div>
 

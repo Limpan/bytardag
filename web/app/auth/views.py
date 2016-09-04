@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, url_for, flash, current_app, abort
+from flask import render_template, redirect, request, url_for, flash, current_app, abort, Markup
 from flask_login import login_user, logout_user, login_required, current_user
 from .forms import LoginForm, ChangePasswordForm, PasswordResetRequestForm, ChangeEmailForm, PasswordResetForm
 from . import auth
@@ -37,7 +37,7 @@ def login():
             if user.verify_password(form.password.data):
                 login_user(user, form.remember_me.data)
                 return redirect(request.args.get('next') or url_for('main.index'))
-        flash('Fel användarnamn eller lösenord.')
+        flash(Markup('Fel användarnamn eller lösenord. <a href="{}">Återställ lösenord.</a>'.format(url_for('auth.password_reset_request'))))
     return render_template('auth/login.html', form=form)
 
 
@@ -99,18 +99,18 @@ def password_reset_request():
     form = PasswordResetRequestForm()
 
     if form.validate_on_submit():
+        current_app.logger('User with email adress {email} is trying to recover password.'.format(email=form.email.data))
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             token = user.generate_reset_token()
             # Sends an email to the user, which contains a reset-token.
             from ..email import send_email
-            send_email(user.email,
-                       'Reset password',
-                       'auth/email/reset_password',
-                       user=user,
-                       token=token,
-                       next=request.args.get('next'))
-        flash('Ett mail med instruktioner för att återställa ditt lösenord har blivit skickat till dig.')
+            send_email.delay(user.email,
+                             'Reset password',
+                             'auth/email/reset_password',
+                             user=user,
+                             token=token)
+        flash('Ett mail med instruktioner för att återställa ditt lösenord har skickats till dig.')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)
 

@@ -45,10 +45,8 @@ def index():
 
     return render_template('main/index.html', register_form=register_form,
                                               signup_form=signup_form,
-                                              start_time=current_event.start,
-                                              end_time=current_event.end,
-                                              attending=attending,
-                                              current_event=current_event)
+                                              current_event=current_event,
+                                              attending=attending)
 
 
 @main.route('/profile', methods=['GET', 'POST'])

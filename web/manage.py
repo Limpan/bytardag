@@ -130,7 +130,8 @@ def seed():
                   end=datetime(2016, 10, 1, 12, 0),
                   signup_start=datetime(2016, 9, 11, 7, 0),
                   signup_end=datetime(2016, 9, 25, 0, 0),
-                  limit=125)
+                  limit=125,
+                  next_seller_id=1)
     db.session.add(event)
     db.session.commit()
 
