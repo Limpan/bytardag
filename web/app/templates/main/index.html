@@ -108,17 +108,37 @@
             <p class="text-danger">
               Tyvärr är alla platser bokade. I nuläget har vi inget system för efteranmälan och kan tyvärr inte erbjuda reservplatser.
             </p>
-          {% elif current_user.confirmed and not attending and current_event.signup_open() %}
+          {% elif current_event.signup_open() %}
             <!-- Signup open. -->
-            <p>Anmälan är öppen, anmäl dig med knappen nedan.</p>
-            <form class="form form-horizontal" method="post" role="form">
-              {{ signup_form.hidden_tag() }}
+            {% if attending %}
+              <p class="text-success">
+                Du är redan anmäld!
+              </p>
+            {% elif current_user.confirmed %}
+              <!-- User can sign up. -->
+              <p>Anmälan är öppen, anmäl dig med knappen nedan.</p>
+              <form class="form form-horizontal" method="post" role="form">
+                {{ signup_form.hidden_tag() }}
+                <div class="text-center">
+                  {{ signup_form.submit(class="btn btn-lg btn-primary") }}
+                </div>
+              </form>
+            {% else %}
+              {% if current_user.is_anonymous %}
+                <p>
+                  Du måste registrera ett konto innan du kan anmäla dig.
+                </p>
+              {% else %}
+                <p class="text-warning">
+                  Du måste bekräfta din epostadress innan du kan anmäla dig.
+                </p>
+              {% endif %}
               <div class="text-center">
-                {{ signup_form.submit(class="btn btn-lg btn-primary") }}
+                <button type="button" class="btn btn-lg btn-primary" disabled>Anmäl mig</button>
               </div>
-            </form>
+            {% endif %}
           {% else %}
-            <!-- Preconditions for signup not passed. -->
+            <!-- Signup not started yet. -->
             <p>
               När du har loggat in dig och anmälan har öppnat kan du anmäla dig med knappen nedan.
               Anmälan öppnar {{ moment(current_event.signup_start).fromNow() }}.
