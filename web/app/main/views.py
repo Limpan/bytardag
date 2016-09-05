@@ -24,19 +24,22 @@ def index():
 
     signup_form = SignupForm(prefix='signup')
     if signup_form.validate_on_submit() and signup_form.submit.data:
-        current_app.logger.info('Signing up user {}.'.format(current_user.email))
-        attendance = Attendance()
-        attendance.event = current_event
-        attendance.user = current_user
+        if current_event.signup_open():
+            current_app.logger.info('Signing up user {}.'.format(current_user.email))
+            attendance = Attendance()
+            attendance.event = current_event
+            attendance.user = current_user
 
-        chars = 'ABCEFGHJKLMNOPRSTVXZ'
-        attendance.seller_id = '{}-{:02}'.format(chars[current_event.next_seller_id % 20], current_event.next_seller_id // 20 % 100 * 2 + 1)
-        current_event.next_seller_id += 1
+            chars = 'ABCEFGHJKLMNOPRSTVXZ'
+            attendance.seller_id = '{}-{:02}'.format(chars[current_event.next_seller_id % 20], current_event.next_seller_id // 20 % 100 * 2 + 1)
+            current_event.next_seller_id += 1
 
-        db.session.add(attendance)
-        db.session.commit()
-        send_email.delay(current_user.email, 'Välkommen som säljare', 'main/email/seller', seller_id=attendance.seller_id)
-        flash('Grattis! Du är nu anmäld. Ett mail har skickats till din epostadress med instruktioner.')
+            db.session.add(attendance)
+            db.session.commit()
+            send_email.delay(current_user.email, 'Välkommen som säljare', 'main/email/seller', seller_id=attendance.seller_id)
+            flash('Grattis! Du är nu anmäld. Ett mail har skickats till din epostadress med instruktioner.')
+        else:
+            flash('Anmälan kunde inte göras.')
 
     if not current_user.is_anonymous:
         attending = current_event in [attendance.event for attendance in current_user.events]
@@ -60,6 +63,7 @@ def profile():
         user.phone = form.phone.data
         db.session.commit()
         flash('Din profil har uppdaterats.')
+        return redirect(url_for('main.index'))
     return render_template('main/profile.html', form=form)
 
 

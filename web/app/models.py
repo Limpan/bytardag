@@ -149,8 +149,13 @@ class User(UserMixin, db.Model):
         self.last_seen = datetime.utcnow()
         db.session.add(self)
 
+    @property
     def profile_complete(self):
         return self.first_name and self.last_name
+
+    @profile_complete.setter
+    def profile_complete(self, value):
+        raise AttributeError('Password is not a writable attribute.')
 
     def __repr__(self):
         return '<User {}>'.format(self.email)
@@ -240,4 +245,4 @@ class Attendance(db.Model):
     event = db.relationship('Event', back_populates='attendees')
 
     def __repr__(self):
-        return '<Attendance; event {}, user {}>'.format(self.event_id, self.user_id)
+        return '<Attendance; event {}, user {}>'.format(self.event_id, self.user.email)

@@ -9,7 +9,8 @@ class RegisterForm(Form):
     email = StringField('Email', validators=[Required(),
                                              Length(0, 254),
                                              Email()])
-    password = PasswordField('Lösenord', validators=[Required()])
+    password = PasswordField('Lösenord', validators=[Required(),
+                                                     Length(6, 128)])
     submit = SubmitField('Registrera')
 
     def validate_email(self, field):

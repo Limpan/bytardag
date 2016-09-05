@@ -1,2 +1,10 @@
 Bekräfta din epostadress
+
+Tack för att du registrerat ett konto. För att vara med och sälja på nästa
+klädbytardag behöver du bekräfta denna epostadress med länken nedan.
+
+OBS! Detta är ingen bekgräftan av anmälan.
+
 Besök länken {{ url_for('auth.confirm', token=token, _external=True) }}
+
+PS. Glöm inte bort att fylla i din profil på bytardag.se, vi behöver veta lite mer om dig.

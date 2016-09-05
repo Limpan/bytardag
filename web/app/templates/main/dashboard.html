@@ -8,4 +8,7 @@
     </div>
   </div>
 
+  {% for attendee in current_event.attendees %}
+    {{ attendee.user.email }}
+  {% endfor %}
 {% endblock %}
