@@ -4,9 +4,11 @@ services:
     restart: always
     build: ./web
     expose:
-      - 8000
+      - "8000"
     links:
       - postgresql
+      - rabbitmq
+      - redis
     volumes:
       - ./web/app/static:/usr/src/app/static
     command: /usr/local/bin/gunicorn -w 2 -b :8000 wsgi:app
@@ -26,7 +28,7 @@ services:
     restart: always
     build: ./nginx
     ports:
-      - 80:80
+      - "80:80"
     volumes:
       - /www/static
     volumes_from:
@@ -37,8 +39,8 @@ services:
   postgresql:
     restart: always
     build: ./postgres
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     volumes:
       - dbdata:/var/lib/postgresql/data
     environment:
@@ -48,14 +50,14 @@ services:
   redis:
     restart: always
     image: redis
-    ports:
-      - "6379:6379"
+    expose:
+      - "6379"
 
   rabbitmq:
     restart: always
     image: rabbitmq:3
-    ports:
-      - "5672:5672"
+    expose:
+      - "5672"
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_USERNAME}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
