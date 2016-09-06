@@ -12,6 +12,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 def before_request():
     """Used to register the users activity, when a request is sent."""
     if current_user.is_authenticated:
+        current_app.logger.debug('User ping: {}'.format())
         current_user.ping()
 
 
@@ -136,35 +137,3 @@ def password_reset(token):
         else:
             return redirect(url_for('main.index'))
     return render_template('auth/reset_password.html', form=form)
-
-
-@auth.route('/change-email', methods=['GET', 'POST'])
-@login_required
-def change_email_request():
-    """Route to request an email change."""
-    form = ChangeEmailForm()
-
-    if form.validate_on_submit():
-        if current_user.verify_password(form.password.data):
-            new_email = form.email.data
-            token = current_user.generate_email_change_token(new_email)
-            # Sends an email to the new email adress for verification.
-            from ..email import send_email
-            send_email(new_email, 'Verfiera epostadress', 'auth/email/change_email', user=current_user, token=token)
-            flash('Ett epostmeddelande med instruktioner för att verfiera din nya epostadress har skickats till den.')
-            return redirect(url_for('main.index'))
-        else:
-            flash('Fel epost eller lösenord.')
-    return render_template('auth/change_email.html', form=form)
-
-
-@auth.route('/change-email/<token>')
-@login_required
-def change_email(token):
-    """Used to verify the new email adress, using a token."""
-    # Checks if token is valid.
-    if current_user.change_email(token):
-        flash('Din epostadress har uppdaterats.')
-    else:
-        flash('Invalid request.')
-    return redirect(url_for('main.index'))
