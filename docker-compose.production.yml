@@ -12,6 +12,7 @@ services:
     command: /usr/local/bin/gunicorn -w 2 -b :8000 wsgi:app
     environment:
       - SERVER_NAME=${SERVER_NAME}
+      - SECRET_KEY=${SECRET_KEY}
       - BYTARDAG_CONFIG=${BYTARDAG_CONFIG}
       - BYTARDAG_ADMIN=${BYTARDAG_ADMIN}
       - DATABASE_URI=${DATABASE_URI}
