@@ -12,7 +12,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 def before_request():
     """Used to register the users activity, when a request is sent."""
     if current_user.is_authenticated:
-        current_app.logger.debug('User ping: {}'.format())
+#        current_app.logger.debug('User ping: {}'.format())
         current_user.ping()
 
 
