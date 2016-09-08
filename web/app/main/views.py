@@ -13,7 +13,7 @@ def index():
 
     register_form = RegisterForm(prefix='register')
     if register_form.validate_on_submit() and register_form.submit.data:
-        user = User(email=register_form.email.data, password=register_form.password.data)
+        user = User(email=register_form.email.data.lower(), password=register_form.password.data)
         db.session.add(user)
         db.session.commit()
         current_app.logger.info('New user added, {email} ({id}).'.format(id=user.id, email=user.email))

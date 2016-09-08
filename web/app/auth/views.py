@@ -33,7 +33,7 @@ def login():
 
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email=form.email.data.lower()).first()
         if user is not None:
             if user.verify_password(form.password.data):
                 login_user(user, form.remember_me.data)
@@ -100,8 +100,8 @@ def password_reset_request():
     form = PasswordResetRequestForm()
 
     if form.validate_on_submit():
-        current_app.logger.info('User with email adress {email} is trying to recover password.'.format(email=form.email.data))
-        user = User.query.filter_by(email=form.email.data).first()
+        current_app.logger.info('User with email adress {email} is trying to recover password.'.format(email=form.email.data.lower()))
+        user = User.query.filter_by(email=form.email.data.lower()).first()
         if user:
             token = user.generate_reset_token()
             # Sends an email to the user, which contains a reset-token.
@@ -126,7 +126,7 @@ def password_reset(token):
     form = PasswordResetForm()
 
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email=form.email.data.lower()).first()
         # Checks if user does not exist.
         if user is None:
             return redirect(url_for('main.index'))
