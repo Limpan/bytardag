@@ -63,7 +63,7 @@ def register():
         send_email.delay(user.email, 'Bekräfta din epostadress', 'main/email/confirm', token=token)
         login_user(user, True)
         flash('Ett bekräftelsemail har skickats till din epostadress.')
-        redirect(url_for('main.index'))
+        return redirect(url_for('main.index'))
     return render_template('auth/register.html', form=form)
 
 
