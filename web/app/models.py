@@ -103,6 +103,22 @@ class User(UserMixin, db.Model):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id}).decode('utf-8')
 
+
+    @staticmethod
+    def confirm_account(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return False
+        user = User.query.filter_by(id=data.get('confirm')).first()
+        if not user:
+            return False
+        user.confirm = True
+        db.session.commit()
+        return True
+
+
     def confirm(self, token):
         """Used to verify a token for email confirmation."""
         s = Serializer(current_app.config['SECRET_KEY'])

@@ -69,9 +69,10 @@ def register():
 
 @auth.route('/confirm/<token>')
 def confirm(token):
-    if current_user.confirmed:
-        return redirect(url_for('main.index'))
-    if current_user.confirm(token):
+#    if current_user.confirmed:
+#        return redirect(url_for('main.index'))
+#    if current_user.confirm(token):
+    if User.confirm_account(token):
         flash('Du har bekräftat ditt kontos epostadress.')
     else:
         flash('Bekräftelselänken är felaktig eller för gammal.')
