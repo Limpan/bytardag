@@ -1,7 +1,7 @@
 from flask import current_app, flash, redirect, render_template, url_for
 from flask_login import login_required, request, current_user, login_user
 from . import main
-from .forms import RegisterForm, SignupForm, ProfileForm
+from .forms import SignupForm, ProfileForm
 from .. import db
 from ..models import get_current_event, User, Attendance
 from ..email import send_email
@@ -11,19 +11,8 @@ from ..email import send_email
 def index():
     current_event = get_current_event()
 
-    register_form = RegisterForm(prefix='register')
-    if register_form.validate_on_submit() and register_form.submit.data:
-        user = User(email=register_form.email.data.lower(), password=register_form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        current_app.logger.info('New user added, {email} ({id}).'.format(id=user.id, email=user.email))
-        token = user.generate_confirmation_token()
-        send_email.delay(user.email, 'Bekräfta din epostadress', 'main/email/confirm', token=token)
-        login_user(user, True)
-        flash('Ett bekräftelsemail har skickats till din epostadress.')
-
-    signup_form = SignupForm(prefix='signup')
-    if signup_form.validate_on_submit() and signup_form.submit.data:
+    form = SignupForm()
+    if form.validate_on_submit():
         if current_event.signup_open():
             current_app.logger.info('Signing up user {}.'.format(current_user.email))
             attendance = Attendance()
@@ -46,8 +35,7 @@ def index():
     else:
         attending = None
 
-    return render_template('main/index.html', register_form=register_form,
-                                              signup_form=signup_form,
+    return render_template('main/index.html', form=form,
                                               current_event=current_event,
                                               attending=attending)
 

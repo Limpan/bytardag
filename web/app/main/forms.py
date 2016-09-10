@@ -5,19 +5,6 @@ from flask_wtf import Form
 from wtforms import ValidationError
 
 
-class RegisterForm(Form):
-    email = StringField('Email', validators=[Required(),
-                                             Length(0, 254),
-                                             Email()])
-    password = PasswordField('Lösenord', validators=[Required(),
-                                                     Length(6, 128)])
-    submit = SubmitField('Registrera')
-
-    def validate_email(self, field):
-        if User.query.filter_by(email=field.data).first():
-            raise ValidationError('Email-adressen är redan registrerad.')
-
-
 class SignupForm(Form):
     submit = SubmitField('Anmäl mig')
 

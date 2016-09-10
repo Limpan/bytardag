@@ -92,70 +92,51 @@
         <!-- First box, registration. -->
         <div class="col-md-12 well arrow_box">
           <h3>Registrera dig</h3>
-          <p>Detta är första steget för att bli säljare. Vi kommer inte dela din adress med någon och bara skicka information om klädbytardagen.</p>
           {% if current_user.is_anonymous %}
-          {{ wtf.quick_form(register_form, button_map={'register-submit': 'primary'}) }}
-          <hr/>
-          <p>Har du redan registrerat dig kan du <a href="{{ url_for('auth.login') }}">logga in här</a>.</p>
+            <p>Detta är första steget för att bli säljare. Vi kommer inte dela din adress med någon och bara skicka information om klädbytardagen.</p>
+            <p class="text-center"><a href="{{ url_for('auth.register') }}" class="btn btn-lg btn-primary" role="button">Registrera mig</a></p>
+            <hr/>
+            <p>Har du redan registrerat dig kan du <a href="{{ url_for('auth.login') }}">logga in här</a>.</p>
+          {% else %}
+            <p>Hej {{ current_user.first_name }}, tack för att du har registrerat dig.</p>
+            <p>När anmälan är öppen har du möjlighet att anmäla dig med knappen i rutan nedan.</p>
           {% endif %}
         </div>
+      {% endif %}
 
         <!-- Second box, signup. -->
         <div class="col-md-12 well arrow_box2">
           <h3>Anmäl dig</h3>
-          {% if current_event.signup_over() %}
-            <!-- Signup closed, either full or signup_end has passed. -->
-            <p class="text-danger">
-              Tyvärr är alla platser bokade. I nuläget har vi inget system för efteranmälan och kan tyvärr inte erbjuda reservplatser.
-            </p>
-          {% elif current_event.signup_open() %}
-            <!-- Signup open. -->
-            {% if attending %}
-              <p class="text-success">
-                Du är redan anmäld!
-              </p>
-            {% elif current_user.confirmed and current_user.profile_complete %}
-              <!-- User can sign up. -->
-              <p>Anmälan är öppen, anmäl dig med knappen nedan.</p>
-              <form class="form form-horizontal" method="post" role="form">
-                {{ signup_form.hidden_tag() }}
-                <div class="text-center">
-                  {{ signup_form.submit(class="btn btn-lg btn-primary") }}
-                </div>
-              </form>
-            {% else %}
-              {% if current_user.is_anonymous %}
-                <p>
-                  Du måste registrera ett konto innan du kan anmäla dig.
-                </p>
-              {% else %}
-                {% if not current_user.confirmed %}
-                  <p class="text-warning">
-                    Du måste bekräfta din epostadress innan du kan anmäla dig.
-                  </p>
-                {% endif %}
-                {% if not current_user.profile_complete %}
-                  <p class="text-warning">
-                    Du behöver fylla i din profil innan du kan anmäla dig.
-                  </p>
-                {% endif %}
-              {% endif %}
-              <div class="text-center">
-                <button type="button" class="btn btn-lg btn-primary" disabled>Anmäl mig</button>
-              </div>
-            {% endif %}
-          {% else %}
-            <!-- Signup not started yet. -->
-            <p>
-              När du har loggat in dig och anmälan har öppnat kan du anmäla dig med knappen nedan.
-              Anmälan öppnar {{ moment(current_event.signup_start).fromNow() }}.
-            </p>
+          {% if attending %}
+            <p>Tack för att du anmält dig!</p>
             <div class="text-center">
               <button type="button" class="btn btn-lg btn-primary" disabled>Anmäl mig</button>
             </div>
+          {% else %}
+            {% if current_event.signup_over() %}
+              <p>Alla platser är bokade och anmälan är över för den här gången.</p>
+              <div class="text-center">
+                <button type="button" class="btn btn-lg btn-primary" disabled>Anmäl mig</button>
+              </div>
+            {% else %}
+              {% if current_event.signup_open() %}
+                <p>Anmälan är öppen, använd knappen nedan.</p>
+                <form class="form form-horizontal" method="post" role="form">
+                  {{ form.hidden_tag() }}
+                  <div class="text-center">
+                    {{ form.submit(class="btn btn-lg btn-primary") }}
+                  </div>
+                </form>
+              {% else %}
+                <p>Anmälan har inte öppnat ännu.</p>
+                <p>Anmälan öppnar {{ moment(current_event.signup_start).fromNow() }}.</p>
+                <div class="text-center">
+                  <button type="button" class="btn btn-lg btn-primary" disabled>Anmäl mig</button>
+                </div>
+              {% endif %}
+            {% endif %}
           {% endif %}
         </div>
-      {% endif %}
     </div>
 
   </div>

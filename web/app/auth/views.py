@@ -1,6 +1,6 @@
 from flask import render_template, redirect, request, url_for, flash, current_app, abort, Markup
 from flask_login import login_user, logout_user, login_required, current_user
-from .forms import LoginForm, ChangePasswordForm, PasswordResetRequestForm, ChangeEmailForm, PasswordResetForm
+from .forms import RegisterForm, LoginForm, ChangePasswordForm, PasswordResetRequestForm, ChangeEmailForm, PasswordResetForm
 from . import auth
 from .. import db
 from ..models import User
@@ -47,6 +47,24 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user = User(email=form.email.data.lower(), password=form.password.data,
+                    first_name=form.first_name.data, last_name=form.last_name.data)
+        db.session.add(user)
+        db.session.commit()
+        current_app.logger.info('New user added, {email} ({id}).'.format(id=user.id, email=user.email))
+        token = user.generate_confirmation_token()
+        from ..email import send_email
+        send_email.delay(user.email, 'Bekräfta din epostadress', 'main/email/confirm', token=token)
+        login_user(user, True)
+        flash('Ett bekräftelsemail har skickats till din epostadress.')
+        redirect(url_for('main.index'))
+    return render_template('auth/register.html', form=form)
 
 
 @auth.route('/confirm/<token>')

@@ -14,6 +14,23 @@ class LoginForm(Form):
     submit = SubmitField('Logga in')
 
 
+class RegisterForm(Form):
+    email = StringField('Email', validators=[Required(),
+                                             Length(0, 254),
+                                             Email()])
+    password = PasswordField('Lösenord', validators=[Required(),
+                                                     Length(6, 128)])
+    first_name = StringField('Förnamn', validators=[Required(),
+                                                  Length(1, 64)])
+    last_name = StringField('Efternamn', validators=[Required(),
+                                                   Length(1, 64)])
+    submit = SubmitField('Registrera')
+
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError('Email-adressen är redan registrerad.')
+
+
 class ChangePasswordForm(Form):
     old_password = PasswordField('Gammalt lösenord', validators=[Required()])
     password = PasswordField('Nytt lösenord', validators=[Required(),
