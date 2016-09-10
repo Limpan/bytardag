@@ -13,7 +13,7 @@ def index():
 
     form = SignupForm()
     if form.validate_on_submit():
-        if current_event.signup_open():
+        if current_event.signup_open() and not current_user.is_anonymous:
             current_app.logger.info('Signing up user {}.'.format(current_user.email))
             attendance = Attendance()
             attendance.event = current_event

@@ -120,13 +120,20 @@
               </div>
             {% else %}
               {% if current_event.signup_open() %}
-                <p>Anmälan är öppen, använd knappen nedan.</p>
-                <form class="form form-horizontal" method="post" role="form">
-                  {{ form.hidden_tag() }}
+                {% if current_user.is_anonymous %}
+                  <p>Anmälan är öppen, men du är inte inloggad som en registrerad användare.</p>
                   <div class="text-center">
-                    {{ form.submit(class="btn btn-lg btn-primary") }}
+                    <button type="button" class="btn btn-lg btn-primary" disabled>Anmäl mig</button>
                   </div>
-                </form>
+                {% else %}
+                  <p>Anmälan är öppen, använd knappen nedan.</p>
+                  <form class="form form-horizontal" method="post" role="form">
+                    {{ form.hidden_tag() }}
+                    <div class="text-center">
+                      {{ form.submit(class="btn btn-lg btn-primary") }}
+                    </div>
+                  </form>
+                {% endif %}
               {% else %}
                 <p>Anmälan har inte öppnat ännu.</p>
                 <p>Anmälan öppnar {{ moment(current_event.signup_start).fromNow() }}.</p>
