@@ -3,12 +3,19 @@
 
 {% block page_content %}
   <div class="row">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-12">
       <h1>Admin</h1>
+
+      <table class="table table-striped">
+        {% for attendee in current_event.attendees %}
+        <tr>
+          <td>{{ attendee.user.email }}</td>
+          <td>{{ attendee.user.first_name }}</td>
+          <td>{{ attendee.user.last_name }}</td>
+          <td>{% if attendee.user.confirmed %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </table>
     </div>
   </div>
-
-  {% for attendee in current_event.attendees %}
-    {{ attendee.user.email }}
-  {% endfor %}
 {% endblock %}

@@ -55,6 +55,11 @@ def profile():
     return render_template('main/profile.html', form=form)
 
 
+@main.route('/personal')
+def personal():
+    return render_template('main/personal.html')
+
+
 @main.route('/dashboard')
 @login_required
 def dashboard():
