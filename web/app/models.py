@@ -114,7 +114,7 @@ class User(UserMixin, db.Model):
         user = User.query.filter_by(id=data.get('confirm')).first()
         if not user:
             return False
-        user.confirm = True
+        user.confirmed = True
         db.session.add(user)
         db.session.commit()
         return True
