@@ -64,7 +64,11 @@ def personal():
 @login_required
 def dashboard():
     current_event = get_current_event()
-    return render_template('main/dashboard.html', current_event=current_event)
+    users = User.query.all()
+    unconfirmed_email_users = User.query.filter_by(confirmed = False).all()
+    return render_template('main/dashboard.html', users=users,
+                                                  unconfirmed_email_users=unconfirmed_email_users,
+                                                  current_event=current_event)
 
 
 @main.route('/event/add', methods=['GET', 'POST'])
