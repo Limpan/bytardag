@@ -115,6 +115,7 @@ class User(UserMixin, db.Model):
         if not user:
             return False
         user.confirm = True
+        db.session.add(user)
         db.session.commit()
         return True
 
