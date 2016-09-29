@@ -13,26 +13,43 @@
 
       <h2>Användare anmälda till aktuellt event</h2>
       <table class="table table-striped">
-        {% for attendee in current_event.attendees %}
-        <tr>
-          <td>{{ attendee.user.email }}</td>
-          <td>{{ attendee.user.first_name if attendee.user.first_name }}</td>
-          <td>{{ attendee.user.last_name if attendee.user.last_name }}</td>
-          <td>{{ attendee.seller_id }}</td>
-        </tr>
-        {% endfor %}
+        <thead>
+          <th>E-mail</th>
+          <th>Förnamn</th>
+          <th>Efternamn</th>
+          <th>Säljnr.</th>
+          <th>Tfn</th>
+        </thead>
+        <tbody>
+          {% for attendee in current_event.attendees %}
+          <tr>
+            <td>{{ attendee.user.email }}</td>
+            <td>{{ attendee.user.first_name if attendee.user.first_name }}</td>
+            <td>{{ attendee.user.last_name if attendee.user.last_name }}</td>
+            <td>{{ attendee.seller_id }}</td>
+            <td>{{ attendee.user.phone if attendee.user.phone }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
       </table>
       <p>Totalt {{ current_event.attendees|length }} anmälda.</p>
 
       <h2>Användare som ej bekräftat sin epostadress</h2>
       <table class="table table-striped">
-        {% for user in unconfirmed_email_users %}
-        <tr>
-          <td>{{ user.email }}</td>
-          <td>{{ user.first_name if user.first_name }}</td>
-          <td>{{ user.last_name if user.last_name }}</td>
-        </tr>
-        {% endfor %}
+        <thead>
+          <th>E-mail</th>
+          <th>Förnamn</th>
+          <th>Efternamn</th>
+        </thead>
+        <tbody>
+          {% for user in unconfirmed_email_users %}
+          <tr>
+            <td>{{ user.email }}</td>
+            <td>{{ user.first_name if user.first_name }}</td>
+            <td>{{ user.last_name if user.last_name }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
       </table>
       <p>Totalt {{ unconfirmed_email_users|length }} utan bekräftad epostadress.</p>
     </div>
@@ -40,14 +57,22 @@
     <div class="col-md-6">
       <h2>Alla användare</h2>
       <table class="table table-striped">
-        {% for user in users %}
-        <tr>
-          <td>{{ user.email }}</td>
-          <td>{{ user.first_name if user.first_name }}</td>
-          <td>{{ user.last_name if user.last_name }}</td>
-          <td>{% if user.confirmed %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-        </tr>
-        {% endfor %}
+        <thead>
+          <th>E-mail</th>
+          <th>Förnamn</th>
+          <th>Efternamn</th>
+          <th>Bekräftad?</th>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>{{ user.email }}</td>
+            <td>{{ user.first_name if user.first_name }}</td>
+            <td>{{ user.last_name if user.last_name }}</td>
+            <td>{% if user.confirmed %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
       </table>
       <p>Totalt {{ users|length }} användare i systemet.</p>
 
