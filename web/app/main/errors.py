@@ -5,8 +5,8 @@ from . import main
 
 @main.app_errorhandler(403)
 def forbidden(e):
-    current_app.logger.warning('Unauthorized access attempt ({}) at route {} ({}).'.format(
-        current_user.get_id() or 'guest', request.path, request.method))
+    current_app.logger.warning('Unauthorized access attempt (%s) at route %s (%s).',
+        current_user.get_id() or 'guest', request.path, request.method)
     if request.accept_mimetypes.accept_json and not request.accept_mimetypes.accept_html:
         response = jsonify({'error': 'forbidden'})
         response.status_code = 403
@@ -16,7 +16,7 @@ def forbidden(e):
 
 @main.app_errorhandler(404)
 def page_not_found(e):
-    current_app.logger.info('Page not found: {} ({})'.format(request.path, request.method))
+    current_app.logger.info('Page not found: %s (%s)', request.path, request.method)
     if request.accept_mimetypes.accept_json and not request.accept_mimetypes.accept_html:
         response = jsonify({'error': 'not found'})
         response.status_code = 404
@@ -25,8 +25,8 @@ def page_not_found(e):
 
 
 @main.app_errorhandler(500)
-def internal_server_error(e):
-    current_app.logger.error('Internal server error: {}'.format(e))
+def internal_server_error(error):
+    current_app.logger.error('Internal server error: %s', error)
     if request.accept_mimetypes.accept_json and not request.accept_mimetypes.accept_html:
         response = jsonify({'error': 'internal server error'})
         response.status_code = 500

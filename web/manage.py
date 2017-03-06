@@ -35,11 +35,9 @@ manager.add_command('db', MigrateCommand)
                 help='Do not generate html report.')
 @manager.option('-r', '--no-report', dest='report', action='store_false',
                 help='Do not generate report, only return with exit code.')
-@manager.option('-g', '--gui', dest='gui', action='store_true',
-                help='Run test with selenium.')
 @manager.option('-c', '--coverage', dest='coverage', action='store_true',
                 help='Run with coverage.py.')
-def test(coverage, html, report, gui):
+def test(coverage, html, report):
     """Run tests with py.test."""
     if coverage:
         # Initialize coverage.py.
@@ -49,10 +47,7 @@ def test(coverage, html, report, gui):
 
     # Run all unit tests found in tests folder.
     import pytest
-    if gui:
-        args = ['-v', 'tests']
-    else:
-        args = ['-v', 'tests', '-m', 'not gui']
+    args = ['-v', 'tests']
     exit_code = pytest.main(args)
 
     if coverage:
