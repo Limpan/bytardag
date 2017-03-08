@@ -16,7 +16,7 @@
       <p>
         Kom till Klädbytardagen och fynda. Vi har öppet {{ moment(current_event.start).format('dddd [den] D MMMM [klockan] HH:mm') }} till {{ moment(current_event.end).format('HH:mm') }}.
         Barnkläder och skor säljs i Missionskyrkan på Österlånggatan 3 medan leksaker och tillbehör i säljs på Fröhuset på Österlånggatan 6.
-        Utanför Missionskyrkan kan man köpa korv med bröd som säljs av Eksjö Missionskyrkas Equmeniascouter.
+        Utanför Missionskyrkan kan man köpa korv med bröd som säljs av Eksjö Missionskyrkas Equmeniascouter. Betala helst med kort eller Swish.
       </p>
 
       <!-- Sälj -->
@@ -32,7 +32,7 @@
         Det som ska säljas lämnas in fredagen innan Klädbytardagen mellan 15.00 och 18.00.
         Om du vill ha tillbaka osålda artiklar hämtas dessa på Klädbytardagen mellan 16.45 och 17.00.
         Du som säljare får 75 % i förtjänst av dina sålda varor.
-        Resterande pengar går till Eksjö Missionkyrkas barn och ungdomsverksamhet samt till Fröhuset.
+        Resterande pengar går till Eksjö Missionkyrkas barn och ungdomsverksamhet, Fröhuset och välgörenhet.
       </p>
     </div>
 
@@ -126,6 +126,7 @@
                   </div>
                 {% else %}
                   <p>Anmälan är öppen, använd knappen nedan.</p>
+                  <p class="text-warning">Tänk på att din plats är värdefull. Vi tar inte in reserver om du får förhinder, så anmäl dig bara om du är säker på att du kan delta.</p>
                   <form class="form form-horizontal" method="post" role="form">
                     {{ form.hidden_tag() }}
                     <div class="text-center">
