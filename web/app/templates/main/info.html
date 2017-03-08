@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Varmt välkommen som säljare på Klädbytardagen!</h1>
+      <p>
+        Genom åren har Klädbytardagen vuxit och säljarna fyller lokalerna till bristningsgränsen med fina kläder, skor, leksaker, barnvagnar och annat för barn.
+        För att allt ska fungera så smidigt som möjligt finns det en del saker man bör tänka på.
+        Även om du har varit med tidigare ska du läsa informationen eftersom vi alltid justerar instruktionerna något för att förbättra systemet.
+      </p>
+
+      <div class="panel panel-default">
+        <div class="panel-heading" data-toggle="collapse" href="#whatCanISell">
+          <h2 class="panel-title"><a  data-toggle="collapse" href="#whatCanISell">Vad får jag sälja?</a></h2>
+        </div>
+        <div class="panel-body collapse" id="whatCanISell">
+          <p>
+            Välkommen att lämna in barnkläder, skor, leksaker, filmer, böcker, barnvagnar och andra barnartiklar. Vi tar inte emot mammakläder.
+          </p>
+          <p>
+            Barnkläder upp till st 170 är ok, inte storlekar som XS om det inte är så att de är köpta i en barnbutik. Vi får ibland in skor som uppenbart inte suttit på barnfötter, här kan vi inte dra någon storleksgräns så vi ber dig att respektera att Klädbytardagen är till för barnartiklar.
+          </p>
+          <p>
+            Lämna bara in sådant som är i gott skick! Allt du vill sälja SKA vara helt och rent.
+          </p>
+          <p>
+            Underkläder får endast säljas om de är helt oanvända. Om strumpor säljs måste köparen kunna undersöka kvalitén, de måste alltså vara ihoptejpade och inte lagda i påse.
+          </p>
+          <p>
+            På vårens Klädbytardag ska du endast lämna in ytterkläder och skor för sommarhalvåret och på hösten för vinterhalvåret. Vi ber dig att hålla på detta då vi inte har varken galgar eller plats nog för både vinter- och sommarsaker på samma gång! Tänk även på att skridskor och skidor inte hör sommaren till.
+          </p>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading" data-toggle="collapse" href="#howDoISort">
+          <h2 class="panel-title"><a data-toggle="collapse" href="#howDoISort">Hur sorterar jag inför inlämningen?</a></h2>
+        </div>
+        <div class="panel-body collapse" id="howDoISort">
+          <div class="row">
+            <div class="col-md-4">
+              <h4>Kläder</h4>
+              <p>
+                Kläderna sorteras efter storlek i olika kassar, en storlek per kasse. Ibland är storlekarna lite udda, ex 70, då sorteras de som 68.
+              </p>
+              <p>
+                Vid dubbelstorlekar går vi efter den mindre storleken, ex 86/92 sorteras som 86. Leksaker och barnartiklar sorteras för sig, se nedan.
+              </p>
+              <p>
+                Ytterkläder ska ligga i separata kassar och då storlekssorterat i tre kategorier: baby-92, 98-128 och 134-170.
+                Tvådelade kläder fästs ihop med säkerhetsnål och märk med en enda prislapp.
+              </p>
+            </div>
+            <div class="col-md-4">
+              <h4>Skor</h4>
+              <p>
+                Skor läggs i egna kassar, ej storlekssorterade. Sätt inte prislapp på båda skorna utan fäst samman skorna.
+                Allra helst med snöre, tejp går sönder. Att skriva endast säljnummer i den andra skon är ok, det kan ju hända att skorna ändå kommer ifrån varandra.
+                Skorna MÅSTE hänga ihop. Detta gäller även skridskor på höstens bytardag. Fotbollsskor och ridstövlar räknas som fritidssaker och säljs tillsammans med övriga barnartiklar.
+              </p>
+            </div>
+            <div class="col-md-4">
+              <h4>Övrigt</h4>
+              <p>
+                Övriga barnartiklar sorteras enligt följande: böcker och film/CD, spel och pussel, babytillbehör, gosedjur och övrigt. Då går uppackningen lättare. Tänk på att fritidssaker, böcker, film och spel ska vara för barn. Film och spel ska vara okej för barn under 15 år.
+              </p>
+              <p>
+                Om exempelvis småleksaker ska säljas tillsammans, använd då en genomskinlig påse att lägga dem i.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading" data-toggle="collapse" href="#canIGiveDirectly">
+          <h2 class="panel-title"><a data-toggle="collapse" href="#canIGiveDirectly">Kan jag skänka saker direkt?</a></h2>
+        </div>
+        <div class="panel-body collapse" id="canIGiveDirectly">
+          <p>
+            Om du vill skänka något direkt, kan du lämna det till insamlingen redan på fredagen. Kom ihåg att detta också SKA vara helt och rent! Skänk heller inte underkläder som är använda eller strumpor som man inte kan se kvalitén på.
+          </p>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading" data-toggle="collapse" href="#howDoIWrite">
+          <h2 class="panel-title"><a data-toggle="collapse" href="#howDoIWrite">Hur skriver jag prislapparna?</a></h2>
+        </div>
+        <div class="panel-body collapse" id="howDoIWrite">
+          <div class="row">
+            <div class="col-md-6">
+              <h4>Tejp</h4>
+              <p>
+                Märk med ditt säljnummer, beskrivning, storlek, och pris (se ”utformning av lappen”) på frystejp eller liknande, fäst inte med nålar. Prova gärna hur väl tejpen fäster, det finns många olika kvalitéer på tejp.
+              </p>
+              <p>
+                Använd inte för små lappar, de tappas lätt bort och är svårlästa.
+              </p>
+              <p>
+                Märk inte tejpen när den sitter fastklistrad, ibland går färgen igenom tejpen! Lägg heller inte något ovanpå lappen innan den torkat helt.
+              </p>
+
+              <h4>Pris</h4>
+              <p>
+                Du bestämmer själv priset på det du vill sälja. 5 kr är minsta godkända valör och alla priser måste vara satta i 5-kronorssteg, alltså 10, 15, 35 osv.
+              </p>
+              <p>
+                Ett förslag är att i förväg bestämma vilka valörer du ska använda, exempelvis 10, 20, 40, 75 och 100 kronor. Sedan passar du in artiklarna på dessa priser. Det går snabbt för dig att prismärka dina artiklar samt att det går snabbt för oss att räkna och dubbelkolla din förtjänst.
+              </p>
+            </div>
+
+            <div class="col-md-6">
+              <h4>Utformning av lappen</h4>
+              <p>
+                Säljnumret (ex F-01) ska stå först och vara inringat. För att lätt kunna sortera alla lappar behöver ögonen snabbt dras till det inringade numret. Ringa INTE in med röd penna eftersom det kan förväxlas med röd prick.
+              </p>
+              <p>
+                Märk med tydlig röd prick på prislappen det du vill hämta tillbaka på lördagen, om det ej blivit sålt. Plagg utan röd prick skänks. Vi ber dig att inte slentrianmässigt märka plagg med röda prickar utan bara de plagg du verkligen vill ha tillbaka. Det är tyvärr många rödmärkta plagg som inte blir hämtade och det kräver väldigt mycket arbetskraft att sortera ut dessa plagg efter säljnummer.
+              </p>
+              <p>
+                Ett problem som vi har är att en del försöker köpa dyra saker billigt genom att byta lappar. Ibland upptäcks detta i kassan, men det är inte alltid så enkelt. För att förhindra detta ber vi dig som säljare att skriva någon KORT information om det du säljer, ex ”röda byxor”, ”PoP” (alltså märket) eller ”fotbollsskor”. Man kanske kan tycka att det främst behövs på dyrare saker, men det behövs på alla prisklasser då lappen från en billigare artikel hamnar på den dyrare. Vi hoppas att du vill hjälpa oss med detta, både för din och dina medsäljares skull. Vi har upptäckt en bra bieffekt av denna märkning och det är att vi har chans att matcha lappar som lossnat med rätt artikel, exempelvis när vi packar upp sakerna.
+              </p>
+              <p>
+                Se till att skriva tydligt på lappen. Ibland kan man råka skriva fel, eller vilja ändra priset. Skriv då en ny lapp så blir det lättläst och inga misstag görs.
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <h4>Så här ska prislapparna skrivas:</h4>
+              <p><img src="{{ url_for('static', filename='images/exempellapp.png') }}" alt="Exempel på prislapp."></p>
+            </div>
+
+            <div class="col-md-6">
+              <h4>Var fästs lappen?</h4>
+              <p>
+                Fäst remsan på artikeln noga – särskilt på ytterplagg och skor. På ytterplagg kan lappen fästas inuti plagget vid nacken eller byxlinningen där de är lätta att hitta, men inte trillar av så lätt. På kläder som byxor och tröjor: fäst lappen så att den syns när plagget är ihopvikt, annars måste vi vika upp och sen vika om alla kläder vid upplockningen. Sätt ej lappen över en dragkedja.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading" data-toggle="collapse" href="#thingsToRemember">
+          <h2 class="panel-title"><a data-toggle="collapse" href="#thingsToRemember">Saker jag behöver komma ihåg!</a></h2>
+        </div>
+        <div class="panel-body collapse" id="thingsToRemember">
+          <h4>Bekräfta säljplatsen</h4>
+          <p>
+            Glöm inte att clearing- och kontonummer samt vilken bank du har ska ha skickats in till info@bytardag.se innan inlämningen på fredagen. Har vi inte hört av dig antar vi att du inte kommer vara med som säljare, men om det är så att du får förhinder är vi tacksamma om du meddelar oss.
+          </p>
+
+          <h4>Inlämning på fredagen 31/3 kl 15-18</h4>
+          <p>
+            Det som ska säljas lämnas in enligt sorteringsinstruktionen ovan. Vid inlämningen på fredagen går du till Missionskyrkan, Österlånggatan 3, för att bli avprickad och för att få veta var dina varor ska lämnas. Du bär själv dina sorterade och uppmärkta kassar till rätt del av kyrkan. Om någon annan än du lämnar ska du informera denna person om detta. Det är ENBART på fredagen mellan kl 15 och 18 som vi kan ta emot dina artiklar, vi gör inga undantag.
+          </p>
+
+          <h4>Försäljning</h4>
+          <p>
+            Försäljningen sker på lördagen 1/4 kl 10-14.
+          </p>
+
+          <h4>Eventuell hämtning</h4>
+          <p>
+            Hämtning av ej sålda artiklar (de markerade med röd prick) sker kl 16.45 -17.00 under lördagen. Var noga med att kontrollera att bara dina artiklar finns med i det du får hem. Glöm ej heller skor och andra saker som sorteras för sig. Glöm inte att titta bland de saker som har förlorat sin lapp, tyvärr blir det alltid en del saker här.
+            De artiklar som ej hämtats betraktar vi som skänkta och lämnar kyrkan med en lastbil efter hämtningstiden. Man kan alltså INTE hämta vid någon annan tid.
+          </p>
+
+          <h4>Kvitton</h4>
+          <p>
+            Dina kvitton, alltså prislapparna, från det du sålt finns att hämta i Missionskyrkan tisdagen 18 april 18.00-18.30.
+          </p>
+
+          <h4>Flygblad</h4>
+          <p>
+            Bjud in alla du känner så kommer fler köpare! Här finns flygblad som du kan skriva ut och sprida.
+          </p>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading" data-toggle="collapse" href="#miscInfo">
+          <h2 class="panel-title"><a data-toggle="collapse" href="#miscInfo">Övrig info</a></h2>
+        </div>
+        <div class="panel-body collapse" id="miscInfo">
+          <h4>Du får 75%</h4>
+          <p>
+            25% av förtjänsten går till Equmenia Missionskyrkan Eksjö (tidigare Eksjö SMU) – barn och ungdomsverksamheten i församlingen, förskolan Fröhuset och till välgörenhet.
+          </p>
+
+          <h4>Estland</h4>
+          <p>
+            Det som inte säljs eller hämtas efteråt skickas till Brobygget i Estland, ett samarbete mellan missionskyrkor på småländska höglandet och Unionskyrkan i Estland, och hamnar sedan i second hand-butiker i Estland.
+          </p>
+
+          <h4>Utbetalning</h4>
+          <p>
+            Vi betalar endast ut pengar via konto, dvs inga kontanter. Pengarna betalas ut inom 14 dagar, vanligtvis fredagen 2 veckor efter bytardagen.
+          </p>
+
+          <h4>Ansvar</h4>
+          <p>
+            Klädbytardagen kan inte ansvara för att prislappar lossnar eller ersätta bortkomna artiklar. Var noga när du fäster dina lappar! Saker som förlorat sin lapp säljer vi dock inte och de visas upp i samband med hämtningen av rödmärkta saker.
+          </p>
+          <p>
+            Vi förbehåller oss rätten att inte lägga fram sådant till försäljning som är smutsigt eller trasigt.
+          </p>
+          <p>
+            Det har förekommit att saker försvinner på bytardagen. Detta är allvarligt, och vi ber alla att hålla ögonen öppna och genast meddela personalen på bytardagen om man ser något! Vi som arbetar med Klädbytardagen har för avsikt att alla - säljare och köpare - ska bli nöjda!
+          </p>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading" data-toggle="collapse" href="#volunteer">
+          <h2 class="panel-title"><a data-toggle="collapse" href="#volunteer">Vara med och jobba</a></h2>
+        </div>
+        <div class="panel-body collapse" id="volunteer">
+          <p>
+            Vi är många som hjälps åt för att genomföra Klädbytardagen. Den skulle aldrig gå att genomföra utan ett stort antal människor som lägger ned tid och engagemang för att det ska bli av. Det krävs uppemot 100 personer för att klara av en bytardag! Om man vill vara med och förköpa under 2 timmar på fredagskvällen måste man fullgöra minst 3 arbetspass.
+            Om du vill vara med som personal eller vill veta mer kan du kontakta oss på personal@bytardag.se.
+          </p>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading" data-toggle="collapse" href="#contactsAndLinks">
+          <h2 class="panel-title"><a data-toggle="collapse" href="#contactsAndLinks">Kontakt och länkar</a></h2>
+        </div>
+        <div class="panel-body collapse" id="contactsAndLinks">
+          <p>
+            <a href="http://www.missionskyrkaneksjo.se/missionskyrkaneksjo/extern/kladbytardag.htm">Eksjö Missionskyrka</a>
+          </p>
+          <p>
+            <a href="http://www.fvbu.se/frohuseteksjo/">Fröhuset</a>
+          </p>
+          <p>
+            <a href="https://www.facebook.com/kladbytardagen">Facebook</a>
+          </p>
+          <p>
+            <a href="https://www.instagram.com/kladbytardagen/">Instagram</a>
+          </p>
+          <p>
+            <a href="mailto:info@bytardag.se">info@bytardag.se</a>
+          </p>
+          <p>
+            <a href="mailto:personal@bytardag.se">personal@bytardag.se</a>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

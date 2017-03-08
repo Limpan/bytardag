@@ -71,7 +71,6 @@ def dashboard():
                                                   current_event=current_event)
 
 
-@main.route('/event/add', methods=['GET', 'POST'])
-@login_required
-def add_event():
-    return
+@main.route('/info')
+def info():
+    return render_template('main/info.html')
