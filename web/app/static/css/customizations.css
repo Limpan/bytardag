@@ -61,3 +61,12 @@
   border-width: 20px;
   margin-left: -20px;
 }
+
+/* -- Print-friendly information page */
+
+@media print {
+  .panel .collapse {
+    display: block !important;
+    height: auto !important;
+  }
+}

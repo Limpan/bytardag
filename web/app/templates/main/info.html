@@ -133,6 +133,10 @@
             <div class="col-md-6">
               <h4>Så här ska prislapparna skrivas:</h4>
               <p><img src="{{ url_for('static', filename='images/exempellapp.png') }}" alt="Exempel på prislapp."></p>
+
+              <h4>Bildexempel</h4>
+              <p><a href="{{ url_for('static', filename='bildexempel.pdf') }}">Här finns bildexempel</a> för märkning och sortering, kika på den!</p>
+
             </div>
 
             <div class="col-md-6">
@@ -150,36 +154,42 @@
           <h2 class="panel-title"><a data-toggle="collapse" href="#thingsToRemember">Saker jag behöver komma ihåg!</a></h2>
         </div>
         <div class="panel-body collapse" id="thingsToRemember">
-          <h4>Bekräfta säljplatsen</h4>
-          <p>
-            Glöm inte att clearing- och kontonummer samt vilken bank du har ska ha skickats in till info@bytardag.se innan inlämningen på fredagen. Har vi inte hört av dig antar vi att du inte kommer vara med som säljare, men om det är så att du får förhinder är vi tacksamma om du meddelar oss.
-          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <h4>Bekräfta säljplatsen</h4>
+              <p>
+                Glöm inte att clearing- och kontonummer samt vilken bank du har ska ha skickats in till info@bytardag.se innan inlämningen på fredagen. Har vi inte hört av dig antar vi att du inte kommer vara med som säljare, men om det är så att du får förhinder är vi tacksamma om du meddelar oss.
+              </p>
 
-          <h4>Inlämning på fredagen 31/3 kl 15-18</h4>
-          <p>
-            Det som ska säljas lämnas in enligt sorteringsinstruktionen ovan. Vid inlämningen på fredagen går du till Missionskyrkan, Österlånggatan 3, för att bli avprickad och för att få veta var dina varor ska lämnas. Du bär själv dina sorterade och uppmärkta kassar till rätt del av kyrkan. Om någon annan än du lämnar ska du informera denna person om detta. Det är ENBART på fredagen mellan kl 15 och 18 som vi kan ta emot dina artiklar, vi gör inga undantag.
-          </p>
+              <h4>Inlämning på fredagen 31/3 kl 15-18</h4>
+              <p>
+                Det som ska säljas lämnas in enligt sorteringsinstruktionen ovan. Vid inlämningen på fredagen går du till Missionskyrkan, Österlånggatan 3, för att bli avprickad och för att få veta var dina varor ska lämnas. Du bär själv dina sorterade och uppmärkta kassar till rätt del av kyrkan. Om någon annan än du lämnar ska du informera denna person om detta. Det är ENBART på fredagen mellan kl 15 och 18 som vi kan ta emot dina artiklar, vi gör inga undantag.
+              </p>
 
-          <h4>Försäljning</h4>
-          <p>
-            Försäljningen sker på lördagen 1/4 kl 10-14.
-          </p>
+              <h4>Försäljning</h4>
+              <p>
+                Försäljningen sker på lördagen 1/4 kl 10-14.
+              </p>
+            </div>
 
-          <h4>Eventuell hämtning</h4>
-          <p>
-            Hämtning av ej sålda artiklar (de markerade med röd prick) sker kl 16.45 -17.00 under lördagen. Var noga med att kontrollera att bara dina artiklar finns med i det du får hem. Glöm ej heller skor och andra saker som sorteras för sig. Glöm inte att titta bland de saker som har förlorat sin lapp, tyvärr blir det alltid en del saker här.
-            De artiklar som ej hämtats betraktar vi som skänkta och lämnar kyrkan med en lastbil efter hämtningstiden. Man kan alltså INTE hämta vid någon annan tid.
-          </p>
+            <div class="col-md-6">
+              <h4>Eventuell hämtning</h4>
+              <p>
+                Hämtning av ej sålda artiklar (de markerade med röd prick) sker kl 16.45 -17.00 under lördagen. Var noga med att kontrollera att bara dina artiklar finns med i det du får hem. Glöm ej heller skor och andra saker som sorteras för sig. Glöm inte att titta bland de saker som har förlorat sin lapp, tyvärr blir det alltid en del saker här.
+                De artiklar som ej hämtats betraktar vi som skänkta och lämnar kyrkan med en lastbil efter hämtningstiden. Man kan alltså INTE hämta vid någon annan tid.
+              </p>
 
-          <h4>Kvitton</h4>
-          <p>
-            Dina kvitton, alltså prislapparna, från det du sålt finns att hämta i Missionskyrkan tisdagen 18 april 18.00-18.30.
-          </p>
+              <h4>Kvitton</h4>
+              <p>
+                Dina kvitton, alltså prislapparna, från det du sålt finns att hämta i Missionskyrkan tisdagen 18 april 18.00-18.30.
+              </p>
 
-          <h4>Flygblad</h4>
-          <p>
-            Bjud in alla du känner så kommer fler köpare! Här finns flygblad som du kan skriva ut och sprida.
-          </p>
+              <h4>Flygblad</h4>
+              <p>
+                Bjud in alla du känner så kommer fler köpare! <a href="{{ url_for('static', filename='flyer.pdf')}}">Här</a> finns flygblad som du kan skriva ut och sprida.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -188,31 +198,37 @@
           <h2 class="panel-title"><a data-toggle="collapse" href="#miscInfo">Övrig info</a></h2>
         </div>
         <div class="panel-body collapse" id="miscInfo">
-          <h4>Du får 75%</h4>
-          <p>
-            25% av förtjänsten går till Equmenia Missionskyrkan Eksjö (tidigare Eksjö SMU) – barn och ungdomsverksamheten i församlingen, förskolan Fröhuset och till välgörenhet.
-          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <h4>Du får 75%</h4>
+              <p>
+                25% av förtjänsten går till Equmenia Missionskyrkan Eksjö (tidigare Eksjö SMU) – barn och ungdomsverksamheten i församlingen, förskolan Fröhuset och till välgörenhet.
+              </p>
 
-          <h4>Estland</h4>
-          <p>
-            Det som inte säljs eller hämtas efteråt skickas till Brobygget i Estland, ett samarbete mellan missionskyrkor på småländska höglandet och Unionskyrkan i Estland, och hamnar sedan i second hand-butiker i Estland.
-          </p>
+              <h4>Estland</h4>
+              <p>
+                Det som inte säljs eller hämtas efteråt skickas till Brobygget i Estland, ett samarbete mellan missionskyrkor på småländska höglandet och Unionskyrkan i Estland, och hamnar sedan i second hand-butiker i Estland.
+              </p>
 
-          <h4>Utbetalning</h4>
-          <p>
-            Vi betalar endast ut pengar via konto, dvs inga kontanter. Pengarna betalas ut inom 14 dagar, vanligtvis fredagen 2 veckor efter bytardagen.
-          </p>
+              <h4>Utbetalning</h4>
+              <p>
+                Vi betalar endast ut pengar via konto, dvs inga kontanter. Pengarna betalas ut inom 14 dagar, vanligtvis fredagen 2 veckor efter bytardagen.
+              </p>
+            </div>
 
-          <h4>Ansvar</h4>
-          <p>
-            Klädbytardagen kan inte ansvara för att prislappar lossnar eller ersätta bortkomna artiklar. Var noga när du fäster dina lappar! Saker som förlorat sin lapp säljer vi dock inte och de visas upp i samband med hämtningen av rödmärkta saker.
-          </p>
-          <p>
-            Vi förbehåller oss rätten att inte lägga fram sådant till försäljning som är smutsigt eller trasigt.
-          </p>
-          <p>
-            Det har förekommit att saker försvinner på bytardagen. Detta är allvarligt, och vi ber alla att hålla ögonen öppna och genast meddela personalen på bytardagen om man ser något! Vi som arbetar med Klädbytardagen har för avsikt att alla - säljare och köpare - ska bli nöjda!
-          </p>
+            <div class="col-md-6">
+              <h4>Ansvar</h4>
+              <p>
+                Klädbytardagen kan inte ansvara för att prislappar lossnar eller ersätta bortkomna artiklar. Var noga när du fäster dina lappar! Saker som förlorat sin lapp säljer vi dock inte och de visas upp i samband med hämtningen av rödmärkta saker.
+              </p>
+              <p>
+                Vi förbehåller oss rätten att inte lägga fram sådant till försäljning som är smutsigt eller trasigt.
+              </p>
+              <p>
+                Det har förekommit att saker försvinner på bytardagen. Detta är allvarligt, och vi ber alla att hålla ögonen öppna och genast meddela personalen på bytardagen om man ser något! Vi som arbetar med Klädbytardagen har för avsikt att alla - säljare och köpare - ska bli nöjda!
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -6,13 +6,15 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
-
+from raven.contrib.flask import Sentry
+from werkzeug.contrib.fixers import ProxyFix
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
 login_manager = LoginManager()
 mail = Mail()
 moment = Moment()
+sentry = Sentry()
 
 
 def create_app(config_name):
@@ -21,6 +23,7 @@ def create_app(config_name):
     .. _docs: http://flask.pocoo.org/docs/0.10/patterns/appfactories/
     """
     app = Flask(__name__)
+    app.wsgi_app = ProxyFix(app.wsgi_app)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
@@ -34,6 +37,7 @@ def create_app(config_name):
     login_manager.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
+    sentry.init_app(app)
 
     login_manager.session_protection = 'strong'
     login_manager.login_view = 'auth.login'

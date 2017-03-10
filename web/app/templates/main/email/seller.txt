@@ -1,5 +1,7 @@
 Välkommen som säljare på Klädbytardagen!
 
+Välkommen som säljare på Klädbytardagen våren 2017!
+
 Ditt säljnummer är {{ seller_id }}. Så fort du fått detta meddelande bekräftar du din plats genom att svara på det här mailet med dessa 3 uppgifter:
 
 1. bank
@@ -13,7 +15,8 @@ Nedan har du en länk till den detaljerade information som du som säljare behö
 Eftersom några av nyheterna i informationen inte uppmärksammades förra gången så har dessa delar markerats med rött i informationen, det gäller särskilt märkningen.
 
 Information:
-http://www.bytardag.se/static/info.pdf
+http://www.bytardag.se/info
+Nytt för den här gången är att informationen finns på en webbsida som ger lite större överblick. Det finns även möjlighet att skriva ut informationen om du hellre läser det på papper.
 
 Bildexempel:
 http://www.bytardag.se/static/bildexempel.pdf
@@ -24,6 +27,8 @@ http://www.bytardag.se/static/flyer.pdf
 Vill du vara med och hjälpa till? Är man med på tre pass får man möjlighet att förköpa på fredagen efter sorteringen. Läs mer på http://www.bytardag.se/personal.
 
 Gå in och gilla oss på Facebook så kan du även tipsa dina vänner om detta http://www.facebook.com/kladbytardagen.
+
+Vi finns även på Instagram med kontonamn kladbytardagen.
 
 (Eventuellt behöver du kopiera och klistra in länkarna ovan i din webbläsare.)
 
