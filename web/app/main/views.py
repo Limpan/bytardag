@@ -21,7 +21,7 @@ def index():
 
             chars = 'ABCEFGHJKLMNOPRSTVXZ'
             attendance.seller_id = '{}-{:02}'.format(chars[current_event.next_seller_id % 20], current_event.next_seller_id // 20 % 100 * 2 + 1)
-            current_event.next_seller_id += 1
+            current_event.next_seller_id = current_event.next_seller_id + 1
 
             db.session.add(attendance)
             db.session.commit()
