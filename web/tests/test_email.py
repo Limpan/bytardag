@@ -1,14 +1,19 @@
 import pytest
-from app import mail
+import mock
 from app.email import send_email
+from celery.exceptions import Retry
+
+@mock.patch('app.email.requests.post')
+def test_sending_single_recipient_email(mock_post):
+    mock_post.return_value.status_code = 202
+
+    result = send_email('test@example.com', 'Test', 'main/email/test', name='Pink')
+    assert result == True
 
 
-def test_sending_single_recipient_email():
-    with mail.record_messages() as outbox:
-        send_email('test@example.com', 'Test email', 'main/email/test', name='Pink')
-        assert len(outbox) == 1
-        assert len(outbox[0].recipients) == 1
-        assert outbox[0].recipients[0] == 'test@example.com'
-        assert outbox[0].subject == '[bytardag.se] Test email'
-        assert 'Mr. Pink' in outbox[0].html
-        assert 'Mr. Pink' in outbox[0].body
+@mock.patch('app.email.requests.post')
+def test_retry_of_failed_email(mock_post):
+    mock_post.return_value.status_code = 503
+
+    with pytest.raises(Retry):
+        result = send_email('test@example.com', 'Test', 'main/email/test', name='Pink')

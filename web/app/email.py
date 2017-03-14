@@ -5,24 +5,45 @@ from flask import current_app, render_template
 from flask_mail import Message
 from . import create_celery_app
 from . import mail
+import requests
+import json
+
 
 celery = create_celery_app()
 logger = get_task_logger(__name__)
 
 
-@celery.task
-def send_email(to, subject, template, **kwargs):
-    """Function for sending emails."""
-    app = current_app._get_current_object()
-    msg = Message(app.config['BYTARDAG_MAIL_SUBJECT_PREFIX'] + ' ' + subject,
-                  sender=app.config['BYTARDAG_MAIL_SENDER'],
-                  reply_to=app.config['BYTARDAG_MAIL_REPLY_TO'],
-                  recipients=[to], charset='utf-8')
-    msg.body = render_template(template + '.txt', **kwargs)
-    msg.html = render_template(template + '.html', **kwargs)
-    logger.debug('Sending email to {recipient} with {server}.'.format(recipient=to, server=app.config['MAIL_SERVER']))
-    try:
-        mail.send(msg)
-    except Exception as e:
-        logger.error('Failed to send email to {email}'.format(email=msg.recipients), exc_info=1)
-        # TODO: Add code to handle exceptions.
+@celery.task(bind=True, soft_time_limit=5)
+def send_email(self, to_addr, subject, template, **kwargs):
+    app = current_app
+    host = 'https://api.sendgrid.com/v3/'
+    apikey = app.config['SENDGRID_APIKEY']
+    from_addr = app.config['BYTARDAG_MAIL_SENDER']
+
+    data = {
+        'personalizations': [{
+            'to': [{
+                'email': to_addr}],
+                'subject': subject}],
+        'from': { 'email': from_addr},
+        'content': [{
+            'type': 'text/plain',
+            'value': render_template(template + '.html', **kwargs)}]}
+
+    result = requests.post('{host}mail/send'.format(host=host),
+                           json.dumps(data),
+                           headers={'Authorization': 'Bearer {apikey}'.format(apikey=apikey),
+                                    'Content-type': 'application/json'})
+
+    if result.status_code in [200, 202]:
+        # All is well
+        logger.info('Email with subject (%s) successfully sent to %s.' % (subject, to_addr))
+        return True
+
+    if result.status_code in [500, 503]:
+        # Sendgrid messed up, retry in a while
+        logger.info('Email sending failed (to: %s), retrying in a while...' % (to_addr))
+        raise self.retry(countdown = 60 * 3)
+
+    # Something broken, will not retry
+    logger.error('Email sending failed with status code %s and message %s.' % (result.status_code, result.json))
