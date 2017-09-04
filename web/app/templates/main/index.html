@@ -96,7 +96,8 @@
             <p>Detta är första steget för att bli säljare. Vi kommer inte dela din adress med någon och bara skicka information om klädbytardagen.</p>
             <p class="text-center"><a href="{{ url_for('auth.register') }}" class="btn btn-lg btn-primary" role="button">Registrera mig</a></p>
             <hr/>
-            <p>Har du redan registrerat dig kan du <a href="{{ url_for('auth.login') }}">logga in här</a>.</p>
+            <p>Har du redan registrerat dig kan du logga in här.</p>
+            <p class="text-center"><a href="{{ url_for('auth.login') }}" class="btn btn-lg btn-primary" role="button">Logga in</a></p>
           {% else %}
             <p>Hej {{ current_user.first_name }}, tack för att du har registrerat dig.</p>
             <p>När anmälan är öppen har du möjlighet att anmäla dig med knappen i rutan nedan.</p>
