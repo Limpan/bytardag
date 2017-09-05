@@ -1,6 +1,6 @@
 Välkommen som säljare på Klädbytardagen!
 
-Välkommen som säljare på Klädbytardagen våren 2017!
+Välkommen som säljare på Klädbytardagen hösten 2017!
 
 Ditt säljnummer är {{ seller_id }}. Så fort du fått detta meddelande bekräftar du din plats genom att svara på det här mailet med dessa 3 uppgifter:
 
@@ -8,15 +8,15 @@ Ditt säljnummer är {{ seller_id }}. Så fort du fått detta meddelande bekräf
 2. clearingnummer
 3. kontonummer
 
-för det konto som du önskar få din förtjänst insatt på. Glöm inte att uppge säljnummer så vi vet vems uppgifter det är.
+för det konto som du önskar få din förtjänst insatt på. Glöm inte att uppge säljnummer eller inkludera detta mail så vi vet vems uppgifter det är.
 
-Nedan har du en länk till den detaljerade information som du som säljare behöver ta till dig, samt en länk till bildexempel.
+Nedan har du en länk till den detaljerade information som du som säljare behöver läsa, samt en länk till bildexempel.
 
-Information:
+Länk till information:
 http://www.bytardag.se/info
-Nytt för den här gången är att informationen finns på en webbsida som ger lite större överblick. Det finns även möjlighet att skriva ut informationen om du hellre läser det på papper.
+Informationen finns på en webbsida som ger lite större överblick. Det finns även möjlighet att skriva ut informationen om du hellre läser det på papper.
 
-Bildexempel:
+Länk till bildexempel:
 http://www.bytardag.se/static/bildexempel.pdf
 
 Eftersom du kommer få mer sålt om fler vet om att Klädbytardagen går av stapeln finns här även en länk till små flyers du kan skriva ut och sprida vidare.
@@ -24,11 +24,13 @@ http://www.bytardag.se/static/flyer.pdf
 
 Vill du vara med och hjälpa till? Är man med på tre pass får man möjlighet att förköpa på fredagen efter sorteringen. Läs mer på http://www.bytardag.se/personal.
 
-Gå in och gilla oss på Facebook så kan du även tipsa dina vänner om detta http://www.facebook.com/kladbytardagen.
+Gå in och gilla oss på Facebook så kan du även tipsa vänner om detta http://www.facebook.com/kladbytardagen.
 
 Vi finns även på Instagram med kontonamn kladbytardagen.
 
 (Eventuellt behöver du kopiera och klistra in länkarna ovan i din webbläsare.)
+
+Har vi inte hört av dig antar vi att du inte kommer vara med som säljare, men om det är så att du får förhinder är vi tacksamma om du meddelar oss.
 
 Tack för att du är med och gör Klädbytardagen möjlig!
 
