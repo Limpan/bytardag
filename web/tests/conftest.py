@@ -1,7 +1,7 @@
 import pytest
-from app import create_app
+from app import create_app, create_celery_app
 from app import db as _db
-from app.models import Role
+from app.models import Role, Event
 
 
 @pytest.fixture(scope='session')
@@ -20,12 +20,27 @@ def app(request):
 
 
 @pytest.fixture(scope='session')
+def celery_app(request):
+    """Create an application context with Celery."""
+    celery_app = create_celery_app('testing')
+    return celery_app
+
+
+@pytest.yield_fixture
+def client(app):
+    """Test client."""
+    with app.test_client() as client:
+        yield client
+
+
+@pytest.fixture(scope='session')
 def db(app, request):
     """Session wide database connection."""
     _db.init_app(app)
     _db.create_all()
     _db.session.commit()
     Role.insert_roles()
+    Event.insert_event()
 
     def teardown():
         _db.session.close_all()

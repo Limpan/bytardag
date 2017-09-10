@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+  <div class="row">
+    <div class="col-md-12">
+
+      <h1>Anmälan som volontär</h1>
+
+      <p>Denna sida är för dig som vill anmäla dig som volontär.</p>
+    </div><!-- /.col-md-12 -->
+  </div><!-- /.row -->
+
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2">
+      <form method="POST" action="/" class="form-horizontal">
+        {{ form.csrf_token }}
+
+
+        <div class="form-group">
+          <div class="col-sm-2">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="">
+              </label>
+            </div>
+          </div>
+          <div class="col-sm-10">
+            <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+          </div>
+        </div>
+
+
+          <div class="panel panel-default">
+            <label for="{{ form.available_week_before.name }}">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{ form.available_week_before.label.text }}</h3>
+
+            </div>
+            <div class="panel-body">
+              <div class="row vertical-align">
+                <div class="col-xs-1 text-center">
+                  {{ form.available_week_before() }}
+                </div><!-- /.col-sm-1 -->
+                <div class="col-xs-11">
+                  <p>
+                    Basic panel example
+                  </p>
+                </div><!-- /.col-sm-11 -->
+              </div><!-- /.row -->
+            </div>
+          </label>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row vertical-align">
+              <div class="col-xs-1 text-center">
+                {{ form.available_thursday() }}
+              </div><!-- /.col-sm-1 -->
+              <div class="col-xs-11">
+
+                <h3>{{ form.available_friday }}</h3>
+                <p>
+                  Basic panel example
+                </p>
+              </div><!-- /.col-sm-11 -->
+            </div><!-- /.row -->
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row vertical-align">
+              <div class="col-xs-1 text-center">
+                {{ form.available_friday() }}
+              </div><!-- /.col-sm-1 -->
+              <div class="col-xs-11">
+
+                <h3>{{ form.available_friday.label }}</h3>
+                <p>
+                  Basic panel example
+                </p>
+              </div><!-- /.col-sm-11 -->
+            </div><!-- /.row -->
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row vertical-align">
+              <div class="col-xs-1 text-center">
+                {{ form.available_saturday_part_a() }}
+              </div><!-- /.col-sm-1 -->
+              <div class="col-xs-11">
+
+                <h3>{{ form.available_saturday_part_a.label }}</h3>
+                <p>
+                  Basic panel example
+                </p>
+              </div><!-- /.col-sm-11 -->
+            </div><!-- /.row -->
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row vertical-align">
+              <div class="col-xs-1 text-center">
+                {{ form.available_saturday_part_b() }}
+              </div><!-- /.col-sm-1 -->
+              <div class="col-xs-11">
+
+                <h3>{{ form.available_saturday_part_b.label }}</h3>
+                <p>
+                  Basic panel example
+                </p>
+              </div><!-- /.col-sm-11 -->
+            </div><!-- /.row -->
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row vertical-align">
+              <div class="col-xs-1 text-center">
+                {{ form.available_sunday() }}
+              </div><!-- /.col-sm-1 -->
+              <div class="col-xs-11">
+
+                <h3>{{ form.available_sunday.label }}</h3>
+                <p>
+                  Basic panel example
+                </p>
+              </div><!-- /.col-sm-11 -->
+            </div><!-- /.row -->
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            {{ form.submit(class="button-primary") }}
+          </div>
+        </div>
+      </form>
+
+    </div><!-- /.col-lg-6 -->
+  </div><!-- /.row -->
+
+{% endblock %}

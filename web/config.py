@@ -4,12 +4,14 @@ import os
 class Config:
     SERVER_NAME = os.environ.get('SERVER_NAME') or 'localhost:5000'
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'very hard to guess string'
+    DB_ENCRYPTION_KEY = os.environ.get('DB_ENCRYPTION_KEY') or 'very hard to guess string'
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     BYTARDAG_ADMIN = os.environ.get('BYTARDAG_ADMIN')
 
-    BYTARDAG_MAIL_SENDER = os.environ.get('MAIL_SENDER') or 'Eksjö Klädbytardag <info@bytardag.se>'
+    BYTARDAG_MAIL_SENDER_ADDRESS = os.environ.get('MAIL_SENDER') or 'info@bytardag.se'
+    BYTARDAG_MAIL_SENDER_NAME = os.environ.get('MAIL_SENDER') or 'Eksjö Klädbytardag'
     BYTARDAG_MAIL_REPLY_TO = os.environ.get('MAIL_REPLY_TO') or 'Eksjö Klädbytardag <info@bytardag.se>'
     BYTARDAG_MAIL_SUBJECT_PREFIX = os.environ.get('MAIL_SUBJECT_PREFIX') or '[bytardag.se]'
 
@@ -20,6 +22,7 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
     SENDGRID_APIKEY = os.environ.get('SENDGRID_APIKEY')
+    SENDGRID_APIURL = os.environ.get('SENDGRID_APIURL') or 'https://api.sendgrid.com/v3/'
 
     SENDGRID_WEBHOOK_USERNAME = os.environ.get('SENDGRID_WEBHOOK_USERNAME') or 'sendgrid'
     SENDGRID_WEBHOOK_PASSWORD = os.environ.get('SENDGRID_WEBHOOK_PASSWORD') or 'secretpassword'
@@ -82,17 +85,33 @@ class DevelopmentConfig(Config):
     DEBUG = True
 
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URI') or \
-        'postgresql+psycopg2://postgres:secretpassword@localhost/development'
+        'postgresql+psycopg2://postgres:secretpassword@postgresql/development'
+
+    MAIL_SUPPRESS_SEND = True
+
+    @classmethod
+    def init_app(cls, app):
+        Config.init_app(app)
+
+        import logging
+        app.logger.setLevel(logging.DEBUG)
 
 
 class TestingConfig(Config):
     TESTING = True
 
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URI') or \
-        'postgresql+psycopg2://postgres:secretpassword@localhost/testing'
+        'postgresql+psycopg2://postgres:secretpassword@postgresql/testing'
 
     WTF_CSRF_ENABLED = False
 
+    CELERY_ALWAYS_EAGER = True
+
+    @classmethod
+    def init_app(cls, app):
+        Config.init_app(app)
+
+        app.testing = True
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or \

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <h1>Profil för {{ user.first_name }} {{ user.last_name }}</h1>
+      <p>Användaren sågs senast för {{ moment(user.last_seen).fromNow() }} ({{ moment(user.last_seen).format('YYYY-MM-DD HH:mm:ss') }}).</p>
+      <p>
+        Epostadress {{ user.email }} {{ '<span style="color: red;"><i>ej</i> bekräftad</span>'|safe if not user.confirmed }}<br/>
+        Telefonnummer: {{ user.phone if user.phone }}<br/>
+        Förnamn: {{ user.first_name }}<br/>
+        Efternamn: {{ user.last_name }}
+      </p>
+
+      {% if user.account %}
+      <p>Användaren har angett ett bankkonto.</p>
+      {% endif %}
+    </div>
+  </div>
+
+{% endblock %}

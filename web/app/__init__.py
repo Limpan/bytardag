@@ -4,6 +4,7 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from raven.contrib.flask import Sentry
@@ -13,6 +14,7 @@ bootstrap = Bootstrap()
 db = SQLAlchemy()
 login_manager = LoginManager()
 mail = Mail()
+migrate = Migrate()
 moment = Moment()
 sentry = Sentry()
 
@@ -27,15 +29,16 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
-    if app.config.get('DEBUG'):
-        from sassutils.wsgi import SassMiddleware
-
-        app.wsgi_app = SassMiddleware(app.wsgi_app, {'app': ('static/sass', 'static/css', '/static/css')})
+    # if app.config.get('DEBUG'):
+    #     from sassutils.wsgi import SassMiddleware
+    #
+    #     app.wsgi_app = SassMiddleware(app.wsgi_app, {'app': ('static/sass', 'static/css', '/static/css')})
 
     bootstrap.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
+    migrate.init_app(app, db)
     moment.init_app(app)
     sentry.init_app(app)
 

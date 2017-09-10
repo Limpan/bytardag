@@ -12,6 +12,9 @@ services:
       - ./web:/usr/src
     command:
       ./manage.py run --host 0.0.0.0 --debugger --reload
+    env_file:
+      .env
+#      ./manage.py runserver --host 0.0.0.0
 
   postgresql:
     build: ./postgres

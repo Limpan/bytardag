@@ -4,6 +4,7 @@ from .forms import RegisterForm, LoginForm, ChangePasswordForm, PasswordResetReq
 from . import auth
 from .. import db
 from ..models import User
+from ..decorators import check_confirmed
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 #from ..email import send_email
 
@@ -11,8 +12,12 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 @auth.before_app_request
 def before_request():
     """Used to register the users activity, when a request is sent."""
+    # if current_user.is_authenticated and not current_user.confirmed:
+    #     if not ('unconfirmed' in request.url_rule.rule or 'confirm' in request.url_rule.rule):
+    #         return redirect(url_for('auth.unconfirmed'))
+    #
     if current_user.is_authenticated:
-#        current_app.logger.debug('User ping: {}'.format())
+        current_app.logger.debug('User ping (%s).' % (current_user.id))
         current_user.ping()
 
 
@@ -25,7 +30,7 @@ def index():
 def login():
     """Route for signing in.
 
-    Checks if user  doeshave a password, and gives a notice if
+    Checks if user does have a password, and gives a notice if
     he or she does not have a password-protected account (the alternative is email sign in).
     """
     if not current_user.is_anonymous:
@@ -37,15 +42,21 @@ def login():
         if user is not None:
             if user.verify_password(form.password.data):
                 login_user(user, form.remember_me.data)
+                current_app.logger.info('Logged in user with email %s.' % user.email)
+                flash('Du är nu inloggad.')
                 return redirect(request.args.get('next') or url_for('main.index'))
         flash(Markup('Fel användarnamn eller lösenord. <a href="{}">Återställ lösenord.</a>'.format(url_for('auth.password_reset_request'))))
+        current_app.logger.info('Failed to login user with email %s.' % form.email.data)
     return render_template('auth/login.html', form=form)
 
 
 @auth.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
+    email = current_user.email
     logout_user()
+    current_app.logger.info('Logged out user with email %s.' % email)
+    flash('Du är nu utloggad.')
     return redirect(url_for('auth.login'))
 
 
@@ -63,7 +74,7 @@ def register():
         send_email.delay(user.email, 'Bekräfta din epostadress', 'main/email/confirm', token=token)
         login_user(user, True)
         flash('Ett bekräftelsemail har skickats till din epostadress.')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('auth.unconfirmed'))
     return render_template('auth/register.html', form=form)
 
 
@@ -77,6 +88,14 @@ def confirm(token):
     else:
         flash('Bekräftelselänken är felaktig eller för gammal.')
     return redirect(url_for('main.index'))
+
+
+@auth.route('/unconfirmed')
+@login_required
+def unconfirmed():
+    if current_user.confirmed:
+        return redirect('main.index')
+    return render_template('auth/unconfirmed.html')
 
 
 @auth.route('/confirm')

@@ -1,11 +1,35 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% from "macros.html" import form_field %}
 
 {% block page_content %}
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <h1>Din profil</h1>
-      {{ wtf.quick_form(form) }}
+      <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+
+        {{ form_field(form.email) }}
+        {{ form_field(form.first_name) }}
+        {{ form_field(form.last_name) }}
+
+        <div class="panel panel-default">
+          <div class="panel-heading">Bankkonto för utbetalningar</div>
+          <div class="panel-body">
+            {% if user.account %}
+              <p>
+                Bank: {{ user.account.bank }}</br>
+                Konto: {{ user.account.clearing }} - {{ user.account.number }}
+              </p>
+              <a href="{{ url_for('main.profile_bank') }}">Ändra konto</a>
+            {% else %}
+              <p>Inget konto har angetts. <a href="{{ url_for('main.profile_bank') }}">Ange konto</a></p>
+            {% endif %}
+          </div>
+        </div>
+
+        {{ form.submit(class="btn btn-default") }}
+      </form>
     </div>
   </div>
 
