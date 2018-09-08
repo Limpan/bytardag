@@ -3,8 +3,8 @@ services:
   web:
     restart: always
     build: ./web
-    expose:
-      - "8000"
+    ports:
+      - "8000:8000"
     links:
       - postgresql
       - rabbitmq
@@ -24,18 +24,6 @@ services:
       - MAIL_SERVER=${MAIL_SERVER}
       - MAIL_USERNAME=${MAIL_USERNAME}
       - MAIL_PASSWORD=${MAIL_PASSWORD}
-
-  nginx:
-    restart: always
-    build: ./nginx
-    ports:
-      - "80:80"
-    volumes:
-      - /www/static
-    volumes_from:
-      - web
-    links:
-      - web:web
 
   postgresql:
     restart: always
