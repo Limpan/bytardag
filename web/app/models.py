@@ -2,6 +2,9 @@ from flask import current_app, request, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db, login_manager
 from sqlalchemy.dialects.postgresql import JSON
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy_utils import EncryptedType
+from sqlalchemy_utils.types.encrypted.encrypted_type import AesEngine
 from app.exceptions import ValidationError
 from datetime import datetime, time
 from flask_login import UserMixin, AnonymousUserMixin
@@ -11,6 +14,10 @@ import hashlib
 """Add database model, see example in
 https://github.com/miguelgrinberg/flasky/blob/master/app/models.py
 """
+
+def db_key():
+    """Return encryption key for database."""
+    return current_app.config['DB_ENCRYPTION_KEY']
 
 
 class Permission:
@@ -72,6 +79,7 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     confirmed = db.Column(db.Boolean, default=False)
     phone = db.Column(db.String(32))
+    account = db.relationship('BankAccount', uselist=False, backref='user')
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     events = db.relationship('Attendance', back_populates='user')
 
@@ -172,7 +180,7 @@ class User(UserMixin, db.Model):
 
     @profile_complete.setter
     def profile_complete(self, value):
-        raise AttributeError('Password is not a writable attribute.')
+        raise AttributeError('profile_complete is not a writable attribute.')
 
     def __repr__(self):
         return '<User {}>'.format(self.email)
@@ -197,6 +205,43 @@ class AnonymousUser(AnonymousUserMixin):
 login_manager.anonymous_user = AnonymousUser
 
 
+class BankAccount(db.Model):
+    """Database model for bank accounts."""
+    __tablename__ = 'bank_accounts'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    bank = db.Column(EncryptedType(db.String(64),
+                                   db_key,
+                                   AesEngine,
+                                   'pkcs5'))
+    clearing = db.Column(EncryptedType(db.String(16),
+                                       db_key,
+                                       AesEngine,
+                                       'pkcs5'))
+    _number = db.Column(EncryptedType(db.String(64),
+                                      db_key,
+                                      AesEngine,
+                                      'pkcs5'))
+
+    @staticmethod
+    def _obfuscate(value):
+        if not value is None:
+            return '*' * (len(value) - 2) + value[-2:]
+        return None
+
+    @hybrid_property
+    def number(self):
+        return BankAccount._obfuscate(self._number)
+
+    @number.setter
+    def number(self, value):
+        self._number = value
+
+    @number.expression
+    def number(cls):
+        return cls._number
+
+
 class Event(db.Model):
     """Database model for the events."""
     __tablename__ = 'events'
@@ -208,6 +253,26 @@ class Event(db.Model):
     limit = db.Column(db.Integer)
     attendees = db.relationship('Attendance', back_populates='event')
     next_seller_id = db.Column(db.Integer, default=0)
+
+
+    @staticmethod
+    def insert_event():
+        from datetime import datetime
+
+        event = Event(start=datetime(2016, 10, 1, 8, 0),
+                      end=datetime(2016, 10, 1, 12, 0),
+                      signup_start=datetime(2016, 9, 11, 7, 0),
+                      signup_end=datetime(2016, 9, 25, 0, 0),
+                      limit=125,
+                      next_seller_id=1)
+        db.session.add(event)
+        db.session.commit()
+
+    @staticmethod
+    def generate_seller_id(i):
+        """Generate seller ids from integer."""
+        chars = 'ABCEFGHJKLMNOPRSTVXZ'
+        return '{}-{:02}'.format(chars[i % 20], i // 20 % 100 * 2 + 1)
 
 
     def signup_open(self):
@@ -225,7 +290,7 @@ class Event(db.Model):
 def get_current_event():
     event = Event.query.filter(Event.start > datetime.utcnow()).order_by(Event.start).first()
     if not event:
-        event = Event.query.order_by(Event.start).one()
+        event = Event.query.order_by(Event.start).first()
     return event
 
 

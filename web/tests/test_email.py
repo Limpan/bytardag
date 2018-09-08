@@ -1,14 +1,12 @@
 import pytest
 from app import mail
 from app.email import send_email
+from flask_mail import Message
+from requests import Response
 
 
-def test_sending_single_recipient_email():
-    with mail.record_messages() as outbox:
-        send_email('test@example.com', 'Test email', 'main/email/test', name='Pink')
-        assert len(outbox) == 1
-        assert len(outbox[0].recipients) == 1
-        assert outbox[0].recipients[0] == 'test@example.com'
-        assert outbox[0].subject == '[bytardag.se] Test email'
-        assert 'Mr. Pink' in outbox[0].html
-        assert 'Mr. Pink' in outbox[0].body
+def test_send_mail(mocker):
+    mock_post = mocker.patch('requests.post')
+    mock_post.return_value = mocker.MagicMock(spec=Response, status_code=200)
+    send_email.apply(args=['test@example.com', 'Test email', 'main/email/test'], kwargs={'name': 'Pink'})
+    assert mock_post.call_count == 1

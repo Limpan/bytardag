@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% from "macros.html" import form_field %}
+
+{% block page_content %}
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Skapa nytt event</h1>
+
+      <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="row">
+          <div class="col-md-6">
+            {{ form_field(form.start) }}
+            {{ form_field(form.end) }}
+            {{ form_field(form.limit) }}
+          </div>
+          <div class="col-md-6">
+            {{ form_field(form.signup_start) }}
+            {{ form_field(form.signup_end) }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            {{ form.submit(class="btn btn-default") }}
+          </div>
+        </div>
+      </form>
+
+
+      <h1>Alla event</h1>
+
+      <table class="table table-striped">
+        <thead>
+          <th>Start</th>
+          <th>Slut</th>
+          <th>Anmälan börjar</th>
+          <th>Anmälan slutar</th>
+          <th>Max antal</th>
+          <th></th>
+        </thead>
+        <tbody>
+          {% for event in events %}
+          <tr>
+            <td>{{ event.start }}</td>
+            <td>{{ event.end }}</td>
+            <td>{{ event.signup_start }}</td>
+            <td>{{ event.signup_end }}</td>
+            <td>{{ event.limit }}</td>
+            <td><a href="{{ url_for('main.event', id=event.id) }}">Detaljer</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+{% endblock %}

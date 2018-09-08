@@ -1,11 +1,11 @@
 from wtforms import BooleanField, PasswordField, StringField, SubmitField
 from wtforms.validators import Email, EqualTo, Length, Regexp, Required
 from  ..models import User
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import ValidationError
 
 
-class LoginForm(Form):
+class LoginForm(FlaskForm):
     email = StringField('Email', validators=[Required(),
                                              Length(1, 254),
                                              Email()])
@@ -14,7 +14,7 @@ class LoginForm(Form):
     submit = SubmitField('Logga in')
 
 
-class RegisterForm(Form):
+class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[Required(),
                                              Length(0, 254),
                                              Email()])
@@ -27,11 +27,11 @@ class RegisterForm(Form):
     submit = SubmitField('Registrera')
 
     def validate_email(self, field):
-        if User.query.filter_by(email=field.data).first():
+        if User.query.filter_by(email=field.data.lower()).first():
             raise ValidationError('Email-adressen är redan registrerad.')
 
 
-class ChangePasswordForm(Form):
+class ChangePasswordForm(FlaskForm):
     old_password = PasswordField('Gammalt lösenord', validators=[Required()])
     password = PasswordField('Nytt lösenord', validators=[Required(),
                                                           EqualTo('password2',
@@ -40,14 +40,14 @@ class ChangePasswordForm(Form):
     submit = SubmitField('Byt lösenord')
 
 
-class PasswordResetRequestForm(Form):
+class PasswordResetRequestForm(FlaskForm):
     email = StringField('Email', validators=[Required(),
                                              Length(1, 254),
                                              Email()])
     submit = SubmitField('Återställ lösenord')
 
 
-class PasswordResetForm(Form):
+class PasswordResetForm(FlaskForm):
     email = StringField('Email', validators=[Required(),
                                              Length(1, 254),
                                              Email()])
@@ -59,11 +59,11 @@ class PasswordResetForm(Form):
 
     def validate_email(self, field):
         """Used to check if the email adress already exists in the database."""
-        if User.query.filter_by(email=field.data).first() is None:
+        if User.query.filter_by(email=field.data.lower()).first() is None:
             raise ValidationError('Okänd email-adress.')
 
 
-class ChangeEmailForm(Form):
+class ChangeEmailForm(FlaskForm):
     email = StringField('Ny Email', validators=[Required(),
                                                 Length(1, 64),
                                                 Email()])
@@ -75,5 +75,5 @@ class ChangeEmailForm(Form):
 
         Raises an ValidationError if the email-adress is already registrated.
         """
-        if User.query.filter_by(email=field.data).first():
+        if User.query.filter_by(email=field.data.lower()).first():
             raise ValidationError('Email-adressen är redan registrerad.')

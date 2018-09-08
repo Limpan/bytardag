@@ -1,32 +1,49 @@
 import pytest
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from flask import url_for
-import re
-
+#from flask import url_for
+from app.models import User
 from app import mail
 
 
-@pytest.mark.skip(reason='fix in the future')
-def test_password_reset_email(client):
-    # response = client.get(url_for('auth.password_reset_request'))
-    with mail.record_messages() as outbox:
-        response = client.post(url_for('auth.password_reset_request'),
-                               data=dict(email=''))
-        # assert response.status_code == 200
-        assert len(outbox) == 1
-        assert outbox[0].subject == '[bytardag.se] Reset password'
-        assert 'Hugo' in outbox[0].html
+def test_login_and_logout(client, db):
+    # Add test user.
+    user = User(email='test@example.com', password='secretsauce', confirmed=True)
+    db.session.add(user)
+    db.session.commit()
 
-        token = re.search(r'reset\/(.*)"', outbox[0].html).group(1)
+    # Login
+    rv = client.post('/auth/login', data=dict(
+        email='test@example.com',
+        password='secretsauce'
+    ), follow_redirects=True)
+    assert 'Du är nu inloggad.'.encode() in rv.data
 
-        response = client.post(url_for('auth.password_reset', token=token),
-                               data=dict(email='hugo@hugolundin.se',
-                               password='1q2w3e4r', password2='1q2w3e4r'))
-        assert response.status_code == 302
+    # Logout
+    rv = client.post('/auth/logout', follow_redirects=True)
+    assert 'Du är nu utloggad.'.encode() in rv.data
 
-        response = client.post(url_for('auth.login'),
-                               data=dict(email='hugo@hugolundin.se',
-                               password='1q2w3e4r'),
-                               follow_redirects=True)
-        assert response.status_code == 200
+    #Correct email, wrong password
+    rv = client.post('/auth/login', data=dict(
+        email='test@example.com',
+        password='ihavenoclue'
+    ), follow_redirects=True)
+    assert 'Fel användarnamn eller lösenord.'.encode() in rv.data
+
+    # Wrong email, correct password
+    rv = client.post('/auth/login', data=dict(
+        email='testx@example.com',
+        password='secretsauce'
+    ), follow_redirects=True)
+    assert 'Fel användarnamn eller lösenord.'.encode() in rv.data
+
+
+def test_password_recovery(client, db, mocker):
+    mock_send_email = mocker.patch('app.email.send_email')
+
+    # Add test user.
+    user = User(email='test@example.com', password='forgotten', confirmed=True)
+    db.session.add(user)
+    db.session.commit()
+
+    rv = client.post('/auth/reset', data=dict(
+        email='test@example.com'
+    ))

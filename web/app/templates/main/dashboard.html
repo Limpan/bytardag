@@ -8,72 +8,108 @@
       <hr>
     </div>
   </div>
+
   <div class="row">
-    <div class="col-md-12">
-
-      <h2>Användare anmälda till aktuellt event</h2>
-      <table class="table table-striped">
-        <thead>
-          <th>E-mail</th>
-          <th>Förnamn</th>
-          <th>Efternamn</th>
-          <th>Säljnr.</th>
-          <th>Tfn</th>
-        </thead>
-        <tbody>
-          {% for attendee in current_event.attendees %}
-          <tr>
-            <td>{{ attendee.user.email }}</td>
-            <td>{{ attendee.user.first_name if attendee.user.first_name }}</td>
-            <td>{{ attendee.user.last_name if attendee.user.last_name }}</td>
-            <td>{{ attendee.seller_id }}</td>
-            <td>{{ attendee.user.phone if attendee.user.phone }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <p>Totalt {{ current_event.attendees|length }} anmälda.</p>
-
-      <h2>Användare som ej bekräftat sin epostadress</h2>
-      <table class="table table-striped">
-        <thead>
-          <th>E-mail</th>
-          <th>Förnamn</th>
-          <th>Efternamn</th>
-        </thead>
-        <tbody>
-          {% for user in unconfirmed_email_users %}
-          <tr>
-            <td>{{ user.email }}</td>
-            <td>{{ user.first_name if user.first_name }}</td>
-            <td>{{ user.last_name if user.last_name }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <p>Totalt {{ unconfirmed_email_users|length }} utan bekräftad epostadress.</p>
-
-      <h2>Alla användare</h2>
-      <table class="table table-striped">
-        <thead>
-          <th>E-mail</th>
-          <th>Förnamn</th>
-          <th>Efternamn</th>
-          <th>Bekräftad?</th>
-        </thead>
-        <tbody>
-          {% for user in users %}
-          <tr>
-            <td>{{ user.email }}</td>
-            <td>{{ user.first_name if user.first_name }}</td>
-            <td>{{ user.last_name if user.last_name }}</td>
-            <td>{% if user.confirmed %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <p>Totalt {{ users|length }} användare i systemet.</p>
-
+    <div class="col-md-4">
+      <h3>Administrera</h3>
+      <p><a href="{{ url_for('main.list_users') }}">Administrera användare</a></p>
+      <p><a href="{{ url_for('main.list_events') }}">Administrera event</a></p>
+    </div>
+    <div class="col-md-4">
+      <h3>Anmälda till aktuellt event</h3>
+      <canvas id="event-stats"></canvas>
+    </div>
+    <div class="col-md-4">
+      <h3>Status för alla användare</h3>
+      <canvas id="user-stats"></canvas>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+  <script type="text/javascript">
+    var ctx = document.getElementById("event-stats");
+    var eventStatsChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ["Anmälda", "Lediga platser"],
+        datasets: [{
+          label: '# of votes',
+          data: [],
+          backgroundColor: [
+            'rgba(121, 62, 135, 1)',
+            'rgba(86, 192, 215, 1)'
+          ]
+        }]},
+      options: {
+        legend: {
+          display: true,
+          position: 'right'
+        }
+      }
+    });
+
+    var request = new XMLHttpRequest();
+    request.open('GET', '/stats/event', true);
+
+    request.onload = function() {
+      if (request.status >= 200 && request.status < 400) {
+        var data = JSON.parse(request.responseText);
+        eventStatsChart.config.data.datasets[0].data = [data.attendees, data.free];
+        eventStatsChart.update();
+      } else {
+        console.log('There was an issue on the server.');
+      }
+    };
+
+    request.onerror = function() {
+      console.log('There was an issue with the request.');
+    };
+
+    request.send();
+  </script>
+  <script type="text/javascript">
+    var ctx = document.getElementById("user-stats");
+    var usersChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ["Bekräftade", "Obekräftade"],
+        datasets: [{
+          label: '# of votes',
+          data: [],
+          backgroundColor: [
+            'rgba(121, 62, 135, 1)',
+            'rgba(86, 192, 215, 1)',
+            'rgba(252, 198, 73, 1)'
+          ]
+        }]},
+      options: {
+        legend: {
+          display: true,
+          position: 'right'
+        }
+      }
+    });
+
+    var request2 = new XMLHttpRequest();
+    request2.open('GET', '/stats/users', true);
+
+    request2.onload = function() {
+      if (request2.status >= 200 && request2.status < 400) {
+        var data = JSON.parse(request2.responseText);
+        usersChart.config.data.datasets[0].data = [data.confirmed_count, data.unconfirmed_count];
+        usersChart.update();
+      } else {
+        console.log('There was an issue on the server.');
+      }
+    };
+
+    request2.onerror = function() {
+      console.log('There was an issue with the request.');
+    };
+
+    request2.send();
+  </script>
 {% endblock %}

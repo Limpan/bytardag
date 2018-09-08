@@ -21,7 +21,7 @@
         {% if current_user.is_anonymous %}
           <li><a href="{{ url_for('auth.login') }}">Logga in</a></li>
         {% else %}
-          <li><a href="{{ url_for('main.profile') }}">Profil</a></li>
+          <li><a href="{{ url_for('main.profile') }}">Profil ({{ current_user.email }})</a></li>
           <li><a href="{{ url_for('auth.logout') }}">Logga ut</a></li>
         {% endif %}
       </ul>
@@ -37,11 +37,6 @@
     {% if not current_user.is_anonymous and not current_user.profile_complete %}
       <div class="alert alert-info">
         <p>Vi behöver veta lite mer om dig. <a href="{{ url_for('main.profile') }}">Fyll i din profil.</a></p>
-      </div>
-    {% endif %}
-    {% if not current_user.is_anonymous and not current_user.confirmed %}
-      <div class="alert alert-warning">
-        <p>Din epostadress har inte bekräftats. <a href="{{ url_for('auth.resend_confirmation') }}">Skicka nytt mail.</a></p>
       </div>
     {% endif %}
     {% for message in get_flashed_messages() %}

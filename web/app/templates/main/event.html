@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% from "macros.html" import form_field %}
+
+{% block page_content %}
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Event #{{ event.id}}</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <h3>Detaljer</h3>
+
+      <p>
+        Start: {{ event.start }}<br/>
+        Slut: {{ event.end }}
+      </p>
+      <p>
+        Anmälan börjar: {{ event.signup_start }}<br/>
+        Anmälan slutar: {{ event.signup_end }}
+      </p>
+    </div>
+
+    <div class="col-md-8">
+      <h3>Deltagare</h3>
+      <p>{{ event.attendees|length }} deltagare har anmält sig, totalt finns det {{ event.limit }} platser.</p>
+
+      <table class="table table-striped">
+        <thead>
+          <th>Säljnummer</th>
+          <th>E-mail</th>
+          <th>Förnamn</th>
+          <th>Efternamn</th>
+          <th>Tidpunkt</th>
+        </thead>
+        <tbody>
+          {% for attendance in event.attendees %}
+          <tr>
+            <td>{{ attendance.seller_id }}</td>
+            <td>{{ attendance.user.email }}</td>
+            <td>{{ attendance.user.first_name if attendance.user.first_name }}</td>
+            <td>{{ attendance.user.last_name if attendance.user.last_name }}</td>
+            <td>{{ attendance.timestamp }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+{% endblock %}

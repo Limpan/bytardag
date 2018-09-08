@@ -62,6 +62,17 @@
   margin-left: -20px;
 }
 
+/* -- Vertical align of cols */
+.vertical-align {
+  display: flex;
+  align-items: center;
+}
+
+.grey-bg {
+  background-color: #f8f8f8;
+}
+
+
 /* -- Print-friendly information page */
 
 @media print {

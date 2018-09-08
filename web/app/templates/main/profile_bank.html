@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% from "macros.html" import form_field %}
+
+{% block page_content %}
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <h1>Bankkonto för utbetalningar</h1>
+      <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+
+        {{ form_field(form.bank) }}
+        {{ form_field(form.clearing) }}
+        {{ form_field(form.number) }}
+
+        {{ form.submit(class="btn btn-default") }}
+    </div>
+  </div>
+
+{% endblock %}
