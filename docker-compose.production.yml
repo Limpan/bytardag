@@ -70,6 +70,7 @@ services:
       - MAIL_SERVER=${MAIL_SERVER}
       - MAIL_USERNAME=${MAIL_USERNAME}
       - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - SENDGRID_APIKEY=${SENDGRID_APIKEY}
 
 volumes:
   dbdata:
