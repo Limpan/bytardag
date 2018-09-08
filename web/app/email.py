@@ -54,11 +54,11 @@ def send_email(self, to, subject, template, **kwargs):
         "content": [
             {
                 "type": "text/plain",
-                "value": render_template(template + '.txt')
+                "value": render_template(template + '.txt', **kwargs)
             },
             {
                 "type": "text/html",
-                "value": render_template(template + '.html')
+                "value": render_template(template + '.html', **kwargs)
             }
         ]
     }
