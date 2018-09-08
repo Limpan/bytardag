@@ -7,6 +7,12 @@
   <div class="col-md-6 col-md-offset-3">
     <h1>Obekräftad epostadress</h1>
     <hr>
-    <p>Din epostadress har inte bekräftats. <a href="{{ url_for('auth.resend_confirmation') }}">Skicka nytt mail.</a></p>
+    <p>
+      Ett mail har skickats till dig, du behöver bara öppna det och klicka på
+      länken så vet vi att du har angett rätt adress.
+    </p>
+    <p>
+      Har du inte fått ett mail (glöm inte kolla skräpposten!) eller om länken hunnit bli ogiltig? <a href="{{ url_for('auth.resend_confirmation') }}">Skicka ett nytt mail till mig!</a>
+    </p>
   </div>
 {% endblock %}
