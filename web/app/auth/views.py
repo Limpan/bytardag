@@ -64,8 +64,11 @@ def logout():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        user = User(email=form.email.data.lower(), password=form.password.data,
-                    first_name=form.first_name.data, last_name=form.last_name.data)
+        user = User(email=form.email.data.lower(),
+                    password=form.password.data,
+                    first_name=form.first_name.data,
+                    last_name=form.last_name.data,
+                    gdpr_consent=True)
         db.session.add(user)
         db.session.commit()
         current_app.logger.info('New user added, {email} ({id}).'.format(id=user.id, email=user.email))
@@ -174,3 +177,13 @@ def password_reset(token):
         else:
             return redirect(url_for('main.index'))
     return render_template('auth/reset_password.html', form=form)
+
+
+@auth.route('gdpr_consent')
+@login_required
+def gdpr_consent():
+    """Route for old users to give GDPR consent."""
+    current_user.gdpr_consent = True
+    db.session.commit()
+    flash('Tack för ditt medgivande.')
+    return redirect(url_for('main.index'))

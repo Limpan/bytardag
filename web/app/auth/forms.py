@@ -24,6 +24,7 @@ class RegisterForm(FlaskForm):
                                                   Length(1, 64)])
     last_name = StringField('Efternamn', validators=[Required(),
                                                    Length(1, 64)])
+    gdpr_consent = BooleanField('Jag godkänner', validators=[Required()])
     submit = SubmitField('Registrera')
 
     def validate_email(self, field):

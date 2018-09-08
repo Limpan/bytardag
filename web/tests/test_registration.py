@@ -11,7 +11,8 @@ def test_register_new_user_and_confirmation(client, db, mocker):
         email='test@example.com',
         password='secretsauce',
         first_name='Clark',
-        last_name='Kent'
+        last_name='Kent',
+        gdpr_consent=True
     ), follow_redirects=True)
 
     # Check database for new user.
@@ -37,7 +38,8 @@ def test_unconfirmed_account(client, db):
         email='test@example.com',
         password='secretsauce',
         first_name='Clark',
-        last_name='Kent'
+        last_name='Kent',
+        gdpr_consent=True
     ), follow_redirects=True)
 
     rv = client.get('profile', follow_redirects=True)
@@ -49,3 +51,16 @@ def test_unconfirmed_account(client, db):
 
     rv = client.get('profile', follow_redirects=True)
     assert 'Din profil'.encode() in rv.data
+
+
+def test_no_gdpr_consent_fails(client, db):
+    # Register new user
+    rv = client.post('auth/register', data=dict(
+        email='test@example.com',
+        password='secretsauce',
+        first_name='Clark',
+        last_name='Kent'
+    ), follow_redirects=True)
+
+    user = db.session.query(User).filter_by(email='test@example.com').first()
+    assert user is None

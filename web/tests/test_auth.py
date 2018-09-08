@@ -46,4 +46,4 @@ def test_password_recovery(client, db, mocker):
 
     rv = client.post('/auth/reset', data=dict(
         email='test@example.com'
-    ))
+    ), follow_redirects=True)
