@@ -78,6 +78,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128), default=None)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     confirmed = db.Column(db.Boolean, default=False)
+    gdpr_consent = db.Column(db.Boolean, default=False)
     phone = db.Column(db.String(32))
     account = db.relationship('BankAccount', uselist=False, backref='user')
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))

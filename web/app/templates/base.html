@@ -46,6 +46,15 @@
       </div>
     {% endfor %}
 
+    {% if not current_user.is_anonymous and not current_user.gdpr_consent %}
+      <div class="alert alert-warning">
+        {% include 'gdpr.html' %}
+        <p>
+          <a href="{{ url_for('auth.gdpr_consent') }}">Jag godkänner</a>
+        </p>
+      </div>
+    {% endif %}
+
     {% block page_content %}{% endblock %}
     <div class="row">
       <div class="col-md-12">
