@@ -13,8 +13,14 @@
         Efternamn: {{ user.last_name }}
       </p>
 
+      {% if user.gdpr_consent %}
+        <p>GDPR-policy accepterad.</p>
+      {% else %}
+        <p>GDPR-policy <span><i>inte</i></span> accepterad.</p>
+      {% endif %}
+
       {% if user.account %}
-      <p>Användaren har angett ett bankkonto.</p>
+        <p>Användaren har angett ett bankkonto.</p>
       {% endif %}
     </div>
   </div>
