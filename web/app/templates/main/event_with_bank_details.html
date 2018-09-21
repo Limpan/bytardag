@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% from "macros.html" import form_field %}
+
+{% block page_content %}
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Event #{{ event.id}} - {{ event.start }}</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Deltagare</h3>
+
+      <table class="table table-striped">
+        <thead>
+          <th>Säljnummer</th>
+          <th>E-mail</th>
+          <th>Bank</th>
+          <th>Clearing- och kontonummer</th>
+        </thead>
+        <tbody>
+          {% for attendance in event.attendees %}
+          <tr>
+            <td>{{ attendance.seller_id }}</td>
+            <td>{{ attendance.user.email }}</td>
+            {% if attendance.user.account %}
+            <td>{{ attendance.user.account.bank }}</td>
+            <td>{{ attendance.user.account.clearing }} {{ attendance.user.account._number }}</td>
+            {% else %}
+            <td>-</td>
+            <td>-</td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+{% endblock %}

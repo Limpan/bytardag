@@ -1,5 +1,5 @@
 from flask import current_app, flash, redirect, render_template, url_for, jsonify
-from flask_login import login_required, current_user, login_user
+from flask_login import fresh_login_required, login_required, current_user, login_user
 from . import main
 from .forms import EventForm, SignupForm, ProfileForm, BankAccountForm, VolunteerForm
 from .. import db
@@ -160,8 +160,22 @@ def list_events():
     events = db.session.query(Event).order_by(Event.start.desc()).all()
     return render_template('main/list_events.html', form=form, events=events)
 
+
 @main.route('/event/<int:id>', methods=['GET', 'POST'])
 @admin_required
 def event(id):
     event = Event.query.get(id)
     return render_template('main/event.html', event=event)
+
+
+@main.route('/event/<int:id>/with_bank')
+@fresh_login_required
+@admin_required
+def event_with_bank_details(id):
+    event = Event.query.get(id)
+    return render_template('main/event_with_bank_details.html', event=event)
+
+
+@main.route('/gdpr')
+def gdpr():
+    return render_template('main/gdpr.html')

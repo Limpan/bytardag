@@ -43,7 +43,7 @@ def test_unconfirmed_account(client, db):
     ), follow_redirects=True)
 
     rv = client.get('profile', follow_redirects=True)
-    assert 'Din epostadress har inte bekräftats.'.encode() in rv.data
+    assert 'Obekräftad epostadress'.encode() in rv.data
 
     user = db.session.query(User).filter_by(email='test@example.com').first()
     user.confirmed = True

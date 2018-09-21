@@ -13,3 +13,8 @@ def test_home_page(client):
     rv = client.get('/')
     assert rv.status_code == 200
     assert 'Klädbytardagen'.encode() in rv.data
+
+
+def test_gdpr_page(client):
+    rv = client.get('/gdpr')
+    assert rv.status_code == 200
