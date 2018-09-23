@@ -1,0 +1,8 @@
+Kontouppgifter för utbetalning
+
+För att kunna få din förtjänst från Klädbytardagen behöver vi dina
+kontouppgifter senast på torsdag.
+
+Uppgifterna fyller du i på din profilsida på {{ url_for('main.profile', _external=True) }}.
+
+Mvh Annika Törngren
