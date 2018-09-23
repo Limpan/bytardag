@@ -42,7 +42,7 @@ def create_app(config_name):
     moment.init_app(app)
     sentry.init_app(app)
 
-    login_manager.session_protection = 'strong'
+#    login_manager.session_protection = 'strong'
     login_manager.login_view = 'auth.login'
 
     from .main import main as main_blueprint

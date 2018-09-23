@@ -6,6 +6,11 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'very hard to guess string'
     DB_ENCRYPTION_KEY = os.environ.get('DB_ENCRYPTION_KEY') or 'very hard to guess string'
 
+    SESSION_COOKIE_SECURE = True
+    REMEMBER_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    REMEMBER_COOKIE_HTTPONLY = True
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     BYTARDAG_ADMIN = os.environ.get('BYTARDAG_ADMIN')
