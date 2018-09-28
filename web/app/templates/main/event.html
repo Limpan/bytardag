@@ -33,7 +33,7 @@
           <th>E-mail</th>
           <th>Förnamn</th>
           <th>Efternamn</th>
-          <th>Tidpunkt</th>
+          <th>Bankkonto</th>
         </thead>
         <tbody>
           {% for attendance in event.attendees %}
@@ -42,7 +42,7 @@
             <td>{{ attendance.user.email }}</td>
             <td>{{ attendance.user.first_name if attendance.user.first_name }}</td>
             <td>{{ attendance.user.last_name if attendance.user.last_name }}</td>
-            <td>{{ attendance.timestamp }}</td>
+            <td>{{ 'x' if attendance.user.account }}</td>
           </tr>
           {% endfor %}
         </tbody>

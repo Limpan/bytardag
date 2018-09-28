@@ -122,6 +122,8 @@ class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or \
         'postgresql+psycopg2://postgres:secretpassword@localhost/bytardag'
 
+    PREFERRED_URL_SCHEME = 'https'
+
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
@@ -149,6 +151,8 @@ Message:
 class StagingConfig(ProductionConfig):
     STAGING = True
 
+    PREFERRED_URL_SCHEME = 'https'
+
     @classmethod
     def init_app(cls, app):
         ProductionConfig.init_app(app)
@@ -157,6 +161,8 @@ class StagingConfig(ProductionConfig):
 class CeleryConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('CELERY_DATABASE_URI') or \
         'postgresql+psycopg2://postgres:secretpassword@postgresql/development'
+
+    PREFERRED_URL_SCHEME = 'https'
 
 
 config = {

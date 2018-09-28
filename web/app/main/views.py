@@ -169,7 +169,7 @@ def event(id):
 
 
 @main.route('/event/<int:id>/with_bank')
-@fresh_login_required
+#@fresh_login_required
 @admin_required
 def event_with_bank_details(id):
     event = Event.query.get(id)
