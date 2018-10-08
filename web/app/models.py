@@ -252,7 +252,7 @@ class Event(db.Model):
     signup_start = db.Column(db.DateTime)
     signup_end = db.Column(db.DateTime)
     limit = db.Column(db.Integer)
-    attendees = db.relationship('Attendance', back_populates='event')
+    attendees = db.relationship('Attendance', back_populates='event', order_by='Attendance.seller_id')
     next_seller_id = db.Column(db.Integer, default=0)
 
 
