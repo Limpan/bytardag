@@ -16,22 +16,29 @@
       <table class="table table-striped">
         <thead>
           <th>Säljnummer</th>
-          <th>E-mail</th>
+          <th>Namn</th>
+          <!--<th>E-mail</th>-->
           <th>Bank</th>
-          <th>Clearing- och kontonummer</th>
+          <th>Clearing</th>
+          <th>Kontonummer</th>
+          <th>Utbetalt?</th>
         </thead>
         <tbody>
           {% for attendance in event.attendees %}
           <tr>
             <td>{{ attendance.seller_id }}</td>
-            <td>{{ attendance.user.email }}</td>
+            <td>{{ attendance.user.last_name }}, {{ attendance.user.first_name }}</td>
+            <!--<td>{{ attendance.user.email }}</td>-->
             {% if attendance.user.account %}
             <td>{{ attendance.user.account.bank }}</td>
-            <td>{{ attendance.user.account.clearing }} {{ attendance.user.account._number }}</td>
+            <td>{{ attendance.user.account.clearing }}</td>
+            <td>{{ attendance.user.account._number }}</td>
             {% else %}
             <td>-</td>
             <td>-</td>
+            <td>-</td>
             {% endif %}
+            <td></td>
           </tr>
           {% endfor %}
         </tbody>
