@@ -79,10 +79,10 @@ def profile_bank():
     return render_template('main/profile_bank.html', form=form)
 
 
-# @main.route('/personal')
-# def personal():
-#     return render_template('main/personal.html')
-
+@main.route('/personal')
+def personal():
+    abort(404)
+    return render_template('main/personal.html')
 
 @main.route('/dashboard')
 @admin_required
