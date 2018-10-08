@@ -1,4 +1,4 @@
-from flask import current_app, flash, redirect, render_template, url_for, jsonify
+from flask import abort, current_app, flash, redirect, render_template, url_for, jsonify
 from flask_login import fresh_login_required, login_required, current_user, login_user
 from . import main
 from .forms import EventForm, SignupForm, ProfileForm, BankAccountForm, VolunteerForm
