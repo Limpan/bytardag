@@ -81,7 +81,6 @@ def profile_bank():
 
 @main.route('/personal')
 def personal():
-    abort(404)
     return render_template('main/personal.html')
 
 @main.route('/dashboard')
