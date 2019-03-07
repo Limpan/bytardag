@@ -1,10 +1,18 @@
-Välkommen som säljare på Klädbytardagen hösten 2018!
+Välkommen som säljare på Klädbytardagen våren 2019!
 
 Ditt säljnummer är {{ seller_id }}. Obs! Svara inte på detta mail som tidigare år.
-Besök din profilsida på bytardag.se och fyll i det bankkonto du vill få din förtjänst insatt på.
+Besök din profilsida på bytardag.se och fyll i det bankkonto du vill få din förtjänst insatt på.  Glöm inte uppdatera uppgifterna om du bytt konto eller bank.
 Sidan är krypterad för din säkerhets skull och dina uppgifter kan bara ses av våra administratörer.
 
 Nedan har du en länk till den detaljerade information som du som säljare behöver läsa, samt en länk till bildexempel.
+
+I år kommer vi att korta ner öppettiden under lördagen till 10-13 istället för 10-14.
+Sista åren har vi haft extremt få kunder sista timmen. Under denna tid kommer istället
+personalen att få köpa icke-rödmärkta saker (som du som säljare inte vill ha tillbaka)
+för halva priset. Det finns tre anledningar till denna ändring. För det första för att
+minska mängden vi behöver hantera efter försäljningen, för det andra för att öka
+förtjänsten och för det tredje för att du som säljare ska få ytterligare lite mer sålt.
+Du kan läsa mer på personalsidan, se länk nedan.
 
 Länk till information:
 https://www.bytardag.se/info
@@ -16,7 +24,7 @@ https://www.bytardag.se/static/bildexempel.pdf
 Eftersom du kommer få mer sålt om fler vet om att Klädbytardagen går av stapeln finns här även en länk till små flyers du kan skriva ut och sprida vidare.
 https://www.bytardag.se/static/flyer.pdf
 
-Vill du vara med och hjälpa till? Är man med på tre pass får man möjlighet att förköpa på fredagen efter sorteringen. Läs mer på https://www.bytardag.se/personal.
+Vi är rätt kort om folk denna bytardag. Vill du vara med och hjälpa till? Är man med på tre pass får man möjlighet att förköpa på fredagen efter sorteringen. I år har vi ändrat lite på personalsidan. Läs mer på https://www.bytardag.se/personal.
 
 Gå in och gilla oss på Facebook så kan du även tipsa vänner om detta http://www.facebook.com/kladbytardagen.
 Vi finns även på Instagram med kontonamn kladbytardagen.
