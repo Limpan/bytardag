@@ -36,7 +36,7 @@
           <th>Konto</th>
         </thead>
         <tbody>
-          {% for attendance in event.attendees %}
+          {% for attendance in event.attendees|sort(attribute='seller_id') %}
           <tr>
             <td>{{ attendance.seller_id }}</td>
             <td>{{ attendance.user.email }}</td>
