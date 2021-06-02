@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+*.egg-info
+/.vscode
+/.coverage
+/.nox
+
+/.python-version
+/.env
+*.db
+_build
