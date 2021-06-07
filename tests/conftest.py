@@ -2,15 +2,18 @@ import os
 
 from config import Config
 import pytest
+from flask_login import login_user
 
 from bytardag import create_app, db as _db
+from bytardag.models import User
+
 # from bytardag.models import Role
 
 
 class TestConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URI") or \
-        "sqlite:///"
+    WTF_CSRF_ENABLED = False
+    SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URI") or "sqlite:///"
 
 
 def pytest_report_header(config):
@@ -59,3 +62,12 @@ def session(db, request):
 
     request.addfinalizer(teardown)
     return session
+
+
+@pytest.fixture
+def authenticated_as_user(app, db, email=""):
+    user = User(email=email)
+    db.session.add(user)
+    db.session.commit()
+    with app.test_request_context():
+        yield login_user(user)

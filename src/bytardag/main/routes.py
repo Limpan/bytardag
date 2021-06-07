@@ -1,6 +1,6 @@
 from bytardag.main import bp
 
 
-@bp.route('/')
+@bp.route("/")
 def index():
-    return 'Hello World!'
+    return "Hello World!"

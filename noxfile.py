@@ -30,7 +30,7 @@ def install_with_constraints(session: Session, *args: str, **kwargs: Any) -> Non
 def black(session: Session) -> None:
     """Run Black code formatter."""
     args = session.posargs or locations
-    install_with_constraints("black")
+    install_with_constraints(session, "black")
     session.run("black", *args)
 
 
@@ -82,7 +82,12 @@ def tests(session: Session) -> None:
     args = session.posargs or ["--cov"]
     session.run("poetry", "install", "--no-dev", external=True)
     install_with_constraints(
-        session, "coverage[toml]", "pytest", "pytest-cov", "pytest-mock", "pytest-flask",
+        session,
+        "coverage[toml]",
+        "pytest",
+        "pytest-cov",
+        "pytest-mock",
+        "pytest-flask",
     )
     session.run("pytest", *args)
 
